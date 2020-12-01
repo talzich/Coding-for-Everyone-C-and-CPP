@@ -14,7 +14,4 @@ int main(void){
     printf("looks like you need an umbrella!\n");
   else
     printf("Looks like you don't need an umbrella!\n");
-
-
-
 }
