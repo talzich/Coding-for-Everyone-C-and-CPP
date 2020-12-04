@@ -16,8 +16,8 @@ int main(void){
 
     while (i<1) {
       i = i + 0.1;
-      sineVal = sine(i);
-      cosineVal = cosine(i);
+      sineVal = sin(i);
+      cosineVal = cos(i);
       printf("sine of %lf is: %lf\t cosine of %lf is: %lf\n", i, sineVal, i, cosineVal);
     }
 
