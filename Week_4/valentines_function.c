@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-void printLove(int count){
+void printVery(int count){
   if(count >= 1 && count <= 10)
   {
     printf("I love you\n");
@@ -17,6 +17,6 @@ int main(void){
   int love;
   printf("How deep is your love? (1-10)\n");
   scanf("%d",& love);
-  printLove(love);
+  printVery(love);
   return 0;
 }
