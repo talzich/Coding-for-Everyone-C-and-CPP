@@ -37,7 +37,6 @@ int main(void){
     }
 
     size_t size = word_conter(my_file);
-    printf("Number of integers in file: %lu\n", size);
 
     rewind(my_file);
 
@@ -45,17 +44,19 @@ int main(void){
     int seals[size];
 
     int i;
-
-      for(i = 0; i < size; i++){
+    double sum = 0;
+    for(i = 0; i < size; i++){
         if(fscanf(my_file, "%d", &weight) == 1)
-            seals[i] = weight;
+            {
+                seals[i] = weight;
+                sum += seals[i];
+            }
         else break;
     }
 
-    for(i = 0; i < size; i++){
-        printf("%d\t %d\n", i, seals[i]);
-    }
-    
+    double avg = sum/size;
+    printf("The average weight for the Northern Elephant Seal is %lf\n", avg);
+
     fclose(my_file);    
     return 0;
 }
