@@ -27,7 +27,7 @@ void print_day(enum day d){
 }
 
 void print_yesterday(enum day today){
-    double yesterday = mod(today-1, 7);
+    double yesterday = my_remainder(today-1, 7);
     print_day(yesterday);
 }
 
