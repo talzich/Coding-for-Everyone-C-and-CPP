@@ -7,3 +7,5 @@ This repo's main objective is to facilitate the progress, quizes, pieces of code
 ***
 [My certificate](https://github.com/talzich/C-Coursera/blob/main/C%20Course%20Certificate.pdf)
 
+I am now enrolled in the full "Coding for Everyone: C and C++ Specialization" from the University of California, Santa Cruz
+
