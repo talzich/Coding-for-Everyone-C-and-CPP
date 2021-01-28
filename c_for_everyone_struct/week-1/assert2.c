@@ -10,7 +10,7 @@
 
 int main(void){
 	assert(0);
-	printf("My Program Is Running");
+	printf("My Program Is Running\n");
 	return 0;
 }
 
