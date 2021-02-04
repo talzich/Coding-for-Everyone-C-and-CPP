@@ -26,10 +26,23 @@ typedef struct
     suit s;     // from
 } card;
 
+// This method defines a comparison method to the qsort() method used in is_straight()
 int comp(const void *a, const void *b){
     card *a_card = (card *)a;
     card *b_card = (card *)b;
     return (a_card->pips - b_card->pips);
+}
+
+// This method generates straight hands for testing 
+int straight(card straight_hand[]){
+    int i;
+    for(i = 0; i<STRAIGHT; i++){
+        straight_hand[i].pips = i+1;
+        straight_hand[i].s = i%4;
+    }
+    straight_hand[STRAIGHT+1].pips = 10;
+    straight_hand[STRAIGHT].pips = 8;
+    return 0;
 }
 
 // This method gets a deck of cards and shuffles it
@@ -275,13 +288,13 @@ int is_three(card hand[], int hand_size)
 int is_straight(card hand[], int hand_size){
     qsort(hand, hand_size, sizeof(card), comp);
     
-    int i, count = 0;
+    int i, count = 1;
     for (i = hand_size-1; i>=1; i--){
         if((hand[i].pips - hand[i-1].pips) == 1) {
             count++;
             if(count == STRAIGHT) return 1;
         }
-        else count = 0;
+        else count = 1;
     } 
     return (count == STRAIGHT);
 }
@@ -290,12 +303,13 @@ int main(void)
     card deck[52];
     init(deck, DECK_SIZE);
     card *hand = deal_hand(HAND_SIZE, deck);
-    
-    printf("Three of a Kind: %d\n", is_three(hand, HAND_SIZE));
-    printf("Pair: %d\n", is_pair(hand, HAND_SIZE));
-    printf("Ace: %d\n", is_ace_high(hand, HAND_SIZE));
-    printf("Straight: %d\n", is_straight(hand, HAND_SIZE));
+    card straight_hand[HAND_SIZE];
+    straight(straight_hand);
+    // printf("Three of a Kind: %d\n", is_three(hand, HAND_SIZE));
+    // printf("Pair: %d\n", is_pair(hand, HAND_SIZE));
+    // printf("Ace: %d\n", is_ace_high(hand, HAND_SIZE));
+    printf("Straight: %d\n", is_straight(straight_hand, HAND_SIZE));
     printf("\n");
-    print_cards(hand, HAND_SIZE);
+    print_cards(straight_hand, HAND_SIZE);
     return 0;
 }
