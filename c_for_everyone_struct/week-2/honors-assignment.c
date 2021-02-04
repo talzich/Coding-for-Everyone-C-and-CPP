@@ -7,8 +7,8 @@
 
 #define ACE 1
 #define KING 13
-#define QUEEN 13
-#define JACK 13
+#define QUEEN 12
+#define JACK 11
 
 // Cards suits
 typedef enum
@@ -35,11 +35,12 @@ int shuffle(card deck[], int len)
     int usec = tv.tv_usec;
     srand48(usec);
 
-
-    if (len > 1) {
+    if (len > 1)
+    {
         size_t i;
-        for (i = len - 1; i > 0; i--) {
-            size_t j = (unsigned int)(drand48()*(i+1));
+        for (i = len - 1; i > 0; i--)
+        {
+            size_t j = (unsigned int)(drand48() * (i + 1));
             card t = deck[j];
             deck[j] = deck[i];
             deck[i] = t;
@@ -79,14 +80,16 @@ int init(card deck[], int len)
 }
 
 // This function prints the deck according to its current order
-int print_cards(card deck[], int len){
-    
+int print_cards(card deck[], int len)
+{
+
     int i;
-    for(i = 0; i < len; i++){
-		switch (deck[i].s)
+    for (i = 0; i < len; i++)
+    {
+        short pip = deck[i].pips;
+        switch (deck[i].s)
         {
         case spades:
-            int pip = deck[i].pips;
             switch (pip)
             {
             case ACE:
@@ -108,9 +111,8 @@ int print_cards(card deck[], int len){
                 printf("%d of Spades\n", deck[i].pips);
                 break;
             }
-        
+            break;
         case hearts:
-            int pip = deck[i].pips;
             switch (pip)
             {
             case ACE:
@@ -132,9 +134,8 @@ int print_cards(card deck[], int len){
                 printf("%d of Hearts\n", deck[i].pips);
                 break;
             }
-
+            break;
         case clubs:
-            int pip = deck[i].pips;
             switch (pip)
             {
             case ACE:
@@ -156,9 +157,8 @@ int print_cards(card deck[], int len){
                 printf("%d of Clubs\n", deck[i].pips);
                 break;
             }
-
+            break;
         case diamonds:
-            int pip = deck[i].pips;
             switch (pip)
             {
             case ACE:
@@ -180,77 +180,95 @@ int print_cards(card deck[], int len){
                 printf("%d of Diamonds\n", deck[i].pips);
                 break;
             }
-	    }
+            break;
+        }
     }
     return 0;
 }
 
 // This function gets a card deck and deals a hand of desired size
-card *deal_hand(int hand_size, card deck[]){
+card *deal_hand(int hand_size, card deck[])
+{
 
-    if(hand_size > DECK_SIZE){
+    if (hand_size > DECK_SIZE)
+    {
         printf("Invalid hand size requested\n");
         return NULL;
     }
     // We shuffle the cards before dealing a hand
     shuffle(deck, DECK_SIZE);
-    card *hand = (card *)malloc(HAND_SIZE*sizeof(card));
-    
+    card *hand = (card *)malloc(HAND_SIZE * sizeof(card));
+
     int i;
-    for(i = 0; i<hand_size; i++){
+    for (i = 0; i < hand_size; i++)
+    {
         hand[i] = deck[i];
     }
     return hand;
 }
 
 // This function checks to see whether a hand has an ace in it
-int is_ace_high(card hand[], int hand_size){
+int is_ace_high(card hand[], int hand_size)
+{
     int i;
-    for(i = 0; i<hand_size; i++){
-        if(hand[i].pips == 1) return 1;
+    for (i = 0; i < hand_size; i++)
+    {
+        if (hand[i].pips == 1)
+            return 1;
     }
     return 0;
 }
 
 // This function checks to see whether a hand has a pair in it
-int is_pair(card hand[], int hand_size){
+int is_pair(card hand[], int hand_size)
+{
 
     int pips[13] = {0};
     int i;
-    for(i = 0; i<hand_size; i++){
+    for (i = 0; i < hand_size; i++)
+    {
         pips[hand[i].pips]++;
-        if(pips[hand[i].pips] == 2) return 1;
+        if (pips[hand[i].pips] == 2)
+            return 1;
     }
     return 0;
 }
 
-int is_two_pair(card hand[], int hand_size){
+// This function checks to see whether a hand has two pairs in it
+int is_two_pair(card hand[], int hand_size)
+{
     int count = 0;
     int pips[13] = {0};
     int i;
-    for(i = 0; i<hand_size; i++){
+    for (i = 0; i < hand_size; i++)
+    {
         pips[hand[i].pips]++;
-        if(pips[hand[i].pips] == 2) count++;
+        if (pips[hand[i].pips] == 2)
+            count++;
     }
     return (count == 2);
 }
+
 // This function checks to see whether a hand has three of a kind
-int is_three(card hand[], int hand_size){
+int is_three(card hand[], int hand_size)
+{
 
     int pips[13] = {0};
     int i;
-    for(i = 0; i<hand_size; i++){
+    for (i = 0; i < hand_size; i++)
+    {
         pips[hand[i].pips]++;
-        if(pips[hand[i].pips] == 3) return 1;
+        if (pips[hand[i].pips] == 3)
+            return 1;
     }
     return 0;
 }
 
-int main(void){
+int main(void)
+{
 
     card deck[52];
     init(deck, DECK_SIZE);
-    shuffle(deck, DECK_SIZE);
     card *hand = deal_hand(HAND_SIZE, deck);
     print_cards(hand, HAND_SIZE);
     printf("Three of a Kind: %d\n", is_three(hand, HAND_SIZE));
@@ -258,6 +276,3 @@ int main(void){
     printf("Ace: %d\n", is_ace_high(hand, HAND_SIZE));
     return 0;
 }
-
-
-
