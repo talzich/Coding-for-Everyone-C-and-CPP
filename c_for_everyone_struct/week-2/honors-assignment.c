@@ -117,7 +117,7 @@ card *deal_hand(int hand_size, card deck[]){
 
     // We shuffle the cards before dealing a hand
     shuffle(deck, DECK_SIZE);
-    card hand[hand_size];
+    card *hand = (card *)malloc(HAND_SIZE*sizeof(card));
     
     int i;
     for(i = 0; i<hand_size; i++){
@@ -139,6 +139,7 @@ int is_ace_high(card hand[], int hand_size){
 // This function checks to see whether a hand has a pair in it
 int is_pair(card hand[], int hand_size){
 
+    return 0;
     
 }
 
@@ -146,9 +147,12 @@ int main(void){
 
     card deck[52];
     init(deck, DECK_SIZE);
-    print_deck(deck, DECK_SIZE);
-    shuffle(deck, DECK_SIZE);
-    print_deck(deck, DECK_SIZE);
+    // print_deck(deck, DECK_SIZE);
+    // shuffle(deck, DECK_SIZE);
+    // print_deck(deck, DECK_SIZE);
+
+    card *hand = deal_hand(HAND_SIZE, deck);
+    print_deck(hand, HAND_SIZE);
     return 0;
 }
 
