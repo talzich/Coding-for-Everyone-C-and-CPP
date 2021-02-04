@@ -2,9 +2,13 @@
 #include <stdlib.h>
 #include <sys/time.h>
 
-#define KING 13
 #define DECK_SIZE 52
 #define HAND_SIZE 7
+
+#define ACE 1
+#define KING 13
+#define QUEEN 13
+#define JACK 13
 
 // Cards suits
 typedef enum
@@ -140,6 +144,17 @@ int is_pair(card hand[], int hand_size){
     return 0;
 }
 
+int is_two_pair(card hand[], int hand_size){
+    int count = 0;
+    int pips[13] = {0};
+    int i;
+    for(i = 0; i<hand_size; i++){
+        pips[hand[i].pips]++;
+        if(pips[hand[i].pips] == 2) count++;
+    }
+    return (count == 2);
+}
+// This function checks to see whether a hand has three of a kind
 int is_three(card hand[], int hand_size){
 
     int pips[13] = {0};
