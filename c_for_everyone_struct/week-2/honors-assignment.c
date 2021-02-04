@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #define KING 13
+#define DECK_SIZE 52
 
 // Cards suits
 typedef enum
@@ -22,7 +23,8 @@ typedef struct
 int shuffle(card deck[], int len)
 {
 
-    if (len != 52)
+    // We want a standard poker deck so we need 52 cards
+    if (len != DECK_SIZE)
     {
         printf("Wrong deck size\n");
         return -1;
@@ -31,7 +33,10 @@ int shuffle(card deck[], int len)
     int i;
     for (i = 0; i < len - 1; i++)
     {
-        int j = i + rand() / (RAND_MAX / (len - i) + 1); // Getting another index from 0 to len-1
+        // Getting another index from 0 to len-1
+        int j = i + rand() / (RAND_MAX / (len - i) + 1); 
+
+        // Shuffling 
         card t = deck[j];
         deck[j] = deck[i];
         deck[i] = t;
@@ -39,19 +44,23 @@ int shuffle(card deck[], int len)
     return 0;
 }
 
-// This method
+// This method fills the deck with standard poker cards
 int init(card deck[], int len)
 {
     short i;
-    if (len != 52)
+
+    // We want a standard poker deck so we need 52 cards
+    if (len != DECK_SIZE)
     {
         printf("Wrong deck size\n");
         return -1;
     }
     for (i = 1; i <= len; i++)
     {
+        // Fill the cards with 1-13
         deck[i - 1].pips = i % 13;
         if (!(i % 13))
+            // If i%13 == 0, this card is a king
             deck[i - 1].pips = KING;
         if (i <= 13)
             deck[i - 1].s = spades;
@@ -64,3 +73,32 @@ int init(card deck[], int len)
     }
     return 0;
 }
+
+
+int print_deck(card deck[]){
+    int i;
+    for(i = 0; i < DECK_SIZE; i++){
+		switch (deck[i].s)
+        {
+        case spades:
+            printf("%d of spades\n", deck[i].pips);
+            break;
+        
+        case hearts:
+            printf("%d of hearts\n", deck[i].pips);
+            break;
+
+        case clubs:
+            printf("%d of clubs\n", deck[i].pips);
+            break;
+
+        case diamonds:
+            printf("%d of diamonds\n", deck[i].pips);
+            break;
+	}
+    return 0;
+}
+
+
+
+
