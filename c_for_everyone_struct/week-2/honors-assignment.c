@@ -4,6 +4,7 @@
 
 #define DECK_SIZE 52
 #define HAND_SIZE 7
+#define STRAIGHT 5
 
 #define ACE 1
 #define KING 13
@@ -24,6 +25,12 @@ typedef struct
     short pips; // could be 1-13
     suit s;     // from
 } card;
+
+int comp(const void *a, const void *b){
+    card *a_card = (card *)a;
+    card *b_card = (card *)b;
+    return (a_card->pips - b_card->pips);
+}
 
 // This method gets a deck of cards and shuffles it
 // It ensures that the array will be shuffled based on a random seed taken from the usec time.
@@ -264,18 +271,31 @@ int is_three(card hand[], int hand_size)
     return 0;
 }
 
+// NOT WORKING - FIX THAT
 int is_straight(card hand[], int hand_size){
+    qsort(hand, hand_size, sizeof(card), comp);
     
+    int i, count = 0;
+    for (i = hand_size-1; i>=1; i--){
+        if((hand[i].pips - hand[i-1].pips) == 1) {
+            count++;
+            if(count == STRAIGHT) return 1;
+        }
+        else count = 0;
+    } 
+    return (count == STRAIGHT);
 }
 int main(void)
 {
-
     card deck[52];
     init(deck, DECK_SIZE);
     card *hand = deal_hand(HAND_SIZE, deck);
-    print_cards(hand, HAND_SIZE);
+    
     printf("Three of a Kind: %d\n", is_three(hand, HAND_SIZE));
     printf("Pair: %d\n", is_pair(hand, HAND_SIZE));
     printf("Ace: %d\n", is_ace_high(hand, HAND_SIZE));
+    printf("Straight: %d\n", is_straight(hand, HAND_SIZE));
+    printf("\n");
+    print_cards(hand, HAND_SIZE);
     return 0;
 }
