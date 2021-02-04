@@ -8,9 +8,6 @@ typedef struct date{ month m; int day; }date;
 
 // This function will print date when getting a struct date as a parameter.
 void printdate(date d){
-	
-	printf("printdate start\n");
-	printf("d.day = %d, d.month = %d\n", d.day, d.m);
 
 	// Notice that for months with different number of days, different validity checks are made.
 	switch(d.m){
@@ -184,7 +181,7 @@ date *nextday(date d){
 				break;
 			}
 			next.day = d.day + 1;
-			if(next.day == 32){next.day = 1; next.m = feb;}
+			if(next.day == 32){next.day = 1; next.m = nov;}
 			return &next;
 		case nov:
 			if (d.day < 1 || d.day > 30){
@@ -206,6 +203,7 @@ date *nextday(date d){
 	return &next;
 }
 
+// February 28, March 14, October 31, and  December 31
 int main(void){
 
 	date d1;
@@ -213,5 +211,30 @@ int main(void){
 	d1.m = jan;
 	printdate(d1);
 	printdate(*(nextday(d1)));
+
+	date d2;
+	d2.day = 28;
+	d2.m = feb;
+	printdate(d2);
+	printdate(*(nextday(d2)));
+
+	date d3;
+	d3.day = 14;
+	d3.m = march;
+	printdate(d3);
+	printdate(*(nextday(d3)));
+
+	date d4;
+	d4.day = 31;
+	d4.m = oct;
+	printdate(d4);
+	printdate(*(nextday(d4)));
+
+	date d5;
+	d5.day = 31;
+	d5.m = dec;
+	printdate(d5);
+	printdate(*(nextday(d5)));
+
 	return 0;
 }
