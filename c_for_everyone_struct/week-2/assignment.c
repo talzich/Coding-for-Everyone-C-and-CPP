@@ -15,87 +15,75 @@ void printdate(date d){
 	// Notice that for months with different number of days, different validity checks are made.
 	switch(d.m){
 		case jan:
-			if (d.day < 1 || d.day > 31){
+			if (d.day < 1 || d.day > 31)
 				printf("Wrong input!\nThe day you chose doesn't match the month.\n");
 				break;
-			}
 			printf("January %d\n", d.day);
 				break;
 		case feb:
-			if (d.day < 1 || d.day > 28){
+			if (d.day < 1 || d.day > 28)
 				printf("Wrong input!\nThe day you chose doesn't match the month.\n");
 				break;
-			}
 			printf("February %d\n", d.day);
 				break;
 		case march:
-            if (d.day < 1 || d.day > 31){
+            if (d.day < 1 || d.day > 31)
                 printf("Wrong input!\nThe day you chose doesn't match the month.\n");
                 break;
-			}
 			printf("March %d\n", d.day);
 				break;
 		case apr:
-			if (d.day < 1 || d.day > 30){
+			if (d.day < 1 || d.day > 30)
 				printf("Wrong input!\nThe day you chose doesn't match the month.\n");
 				break;
-			}
 			printf("April %d\n", d.day);
 				break;
         case may:
-			if (d.day < 1 || d.day > 31){
+			if (d.day < 1 || d.day > 31)
                 printf("Wrong input!\nThe day you chose doesn't match the month.\n");
                 break;
-			}
             printf("May %d\n", d.day);
 				break;
 		case jun:
-			if (d.day < 1 || d.day > 30){
-                printf("Wrong input!\nThe day you chose doesn't match the month.\n");
-                break;
-			}
+			if (d.day < 1 || d.day > 30)
+				printf("Wrong input!\nThe day you chose doesn't match the month.\n");
+				break;
 			printf("June %d\n", d.day);
 				break;
         case jul:
-			if (d.day < 1 || d.day > 31){
+			if (d.day < 1 || d.day > 31)
                 printf("Wrong input!\nThe day you chose doesn't match the month.\n");
                 break;
-			}
             printf("July %d\n", d.day);
 				break;
         case aug:
-			if (d.day < 1 || d.day > 31){
+			if (d.day < 1 || d.day > 31)
                 printf("Wrong input!\nThe day you chose doesn't match the month.\n");
                 break;
-			}
             printf("August %d\n", d.day);
 				break;
 		case sep:
-			if (d.day < 1 || d.day > 30){
+			if (d.day < 1 || d.day > 30)
 				printf("Wrong input!\nThe day you chose doesn't match the month.\n");
 				break;
-			}
 			printf("September %d\n", d.day);
 				break;
         case oct:
-			if (d.day < 1 || d.day > 31){
+			if (d.day < 1 || d.day > 31)
                 printf("Wrong input!\nThe day you chose doesn't match the month.\n");
                 break;
-			}
             printf("October %d\n", d.day);
 				break;
 		case nov:
-			if (d.day < 1 || d.day > 30){
+			if (d.day < 1 || d.day > 30)
 				printf("Wrong input!\nThe day you chose doesn't match the month.\n");
 				break;
-			}
 			printf("November %d\n", d.day);
 				break;
         case dec:
-			if (d.day < 1 || d.day > 31){
+			if (d.day < 1 || d.day > 31)
                 printf("Wrong input!\nThe day you chose doesn't match the month.\n");
                 break;
-			}
             printf("December %d\n", d.day);
 				break;
 	}
