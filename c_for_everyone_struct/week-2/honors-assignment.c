@@ -3,6 +3,7 @@
 
 #define KING 13
 #define DECK_SIZE 52
+#define HAND_SIZE 7
 
 // Cards suits
 typedef enum
@@ -105,6 +106,26 @@ int print_deck(card deck[], int len){
 	    }
     }
     return 0;
+}
+
+// This function gets a card deck and deals a hand of desired size
+card *deal_hand(int hand_size, card deck[]){
+
+    if(hand_size > DECK_SIZE){
+        printf("Invalid hand size requested\n");
+        return NULL;
+    }
+
+    // We shuffle the cards before dealing a hand
+    shuffle(deck, DECK_SIZE);
+    card hand[hand_size];
+    
+    int i;
+    for(i = 0; i<hand_size; i++){
+        hand[i] = deck[i];
+    }
+    return hand;
+
 }
 
 
