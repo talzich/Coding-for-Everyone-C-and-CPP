@@ -242,13 +242,12 @@ int is_ace_high(card hand[], int hand_size)
 // This function checks to see whether a hand has a pair in it
 int is_pair(card hand[], int hand_size)
 {
-
     int pips[13] = {0};
     int i;
     for (i = 0; i < hand_size; i++)
     {
-        pips[hand[i].pips]++;
-        if (pips[hand[i].pips] == 2)
+        pips[hand[i].pips -1]++;
+        if (pips[hand[i].pips -1] == 2)
             return 1;
     }
     return 0;
@@ -284,7 +283,7 @@ int is_three(card hand[], int hand_size)
     return 0;
 }
 
-// NOT WORKING - FIX THAT
+// This function checks to see whether a hand has  a straight in it 
 int is_straight(card hand[], int hand_size){
     qsort(hand, hand_size, sizeof(card), comp);
     
@@ -298,18 +297,19 @@ int is_straight(card hand[], int hand_size){
     } 
     return (count == STRAIGHT);
 }
+
+
+
 int main(void)
 {
     card deck[52];
     init(deck, DECK_SIZE);
     card *hand = deal_hand(HAND_SIZE, deck);
-    card straight_hand[HAND_SIZE];
-    straight(straight_hand);
-    // printf("Three of a Kind: %d\n", is_three(hand, HAND_SIZE));
-    // printf("Pair: %d\n", is_pair(hand, HAND_SIZE));
-    // printf("Ace: %d\n", is_ace_high(hand, HAND_SIZE));
-    printf("Straight: %d\n", is_straight(straight_hand, HAND_SIZE));
+    printf("Three of a Kind: %d\n", is_three(hand, HAND_SIZE));
+    printf("Pair: %d\n", is_pair(hand, HAND_SIZE));
+    printf("Ace: %d\n", is_ace_high(hand, HAND_SIZE));
+    printf("Straight: %d\n", is_straight(hand, HAND_SIZE));
     printf("\n");
-    print_cards(straight_hand, HAND_SIZE);
+    print_cards(hand, HAND_SIZE);
     return 0;
 }
