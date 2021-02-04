@@ -75,7 +75,6 @@ int init(card deck[], int len)
     return 0;
 }
 
-
 // This function prints the deck according to its current order
 int print_deck(card deck[], int len){
     
@@ -128,6 +127,20 @@ card *deal_hand(int hand_size, card deck[]){
 
 }
 
+// This function checks to see whether a hand has an ace in it
+int is_ace_high(card hand[], int hand_size){
+    int i;
+    for(i = 0; i<hand_size; i++){
+        if(hand[i].pips == 1) return 1;
+    }
+    return 0;
+}
+
+// This function checks to see whether a hand has a pair in it
+int is_pair(card hand[], int hand_size){
+
+    
+}
 
 int main(void){
 
