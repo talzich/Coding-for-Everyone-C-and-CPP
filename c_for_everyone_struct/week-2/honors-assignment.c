@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/time.h>
 
 #define KING 13
 #define DECK_SIZE 52
@@ -21,26 +22,24 @@ typedef struct
 } card;
 
 // This method gets a deck of cards and shuffles it
+// It ensures that the array will be shuffled based on a random seed taken from the usec time.
+// Found that great array shuffler at https://stackoverflow.com/questions/6127503/shuffle-array-in-c
 int shuffle(card deck[], int len)
 {
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    int usec = tv.tv_usec;
+    srand48(usec);
 
-    // We want a standard poker deck so we need 52 cards
-    if (len != DECK_SIZE)
-    {
-        printf("Wrong deck size\n");
-        return -1;
-    }
 
-    int i;
-    for (i = 0; i < len - 1; i++)
-    {
-        // Getting another index from 0 to len-1
-        int j = i + rand() / (RAND_MAX / (len - i) + 1); 
-
-        // Shuffling 
-        card t = deck[j];
-        deck[j] = deck[i];
-        deck[i] = t;
+    if (len > 1) {
+        size_t i;
+        for (i = len - 1; i > 0; i--) {
+            size_t j = (unsigned int)(drand48()*(i+1));
+            card t = deck[j];
+            deck[j] = deck[i];
+            deck[i] = t;
+        }
     }
     return 0;
 }
@@ -76,15 +75,10 @@ int init(card deck[], int len)
 }
 
 // This function prints the deck according to its current order
-int print_deck(card deck[], int len){
+int print_cards(card deck[], int len){
     
-    if(len != DECK_SIZE){
-        printf("Wrong deck size\n");
-        return -1;
-    }
-
     int i;
-    for(i = 0; i < DECK_SIZE; i++){
+    for(i = 0; i < len; i++){
 		switch (deck[i].s)
         {
         case spades:
@@ -114,7 +108,6 @@ card *deal_hand(int hand_size, card deck[]){
         printf("Invalid hand size requested\n");
         return NULL;
     }
-
     // We shuffle the cards before dealing a hand
     shuffle(deck, DECK_SIZE);
     card *hand = (card *)malloc(HAND_SIZE*sizeof(card));
@@ -124,7 +117,6 @@ card *deal_hand(int hand_size, card deck[]){
         hand[i] = deck[i];
     }
     return hand;
-
 }
 
 // This function checks to see whether a hand has an ace in it
@@ -139,20 +131,36 @@ int is_ace_high(card hand[], int hand_size){
 // This function checks to see whether a hand has a pair in it
 int is_pair(card hand[], int hand_size){
 
+    int pips[13] = {0};
+    int i;
+    for(i = 0; i<hand_size; i++){
+        pips[hand[i].pips]++;
+        if(pips[hand[i].pips] == 2) return 1;
+    }
     return 0;
-    
+}
+
+int is_three(card hand[], int hand_size){
+
+    int pips[13] = {0};
+    int i;
+    for(i = 0; i<hand_size; i++){
+        pips[hand[i].pips]++;
+        if(pips[hand[i].pips] == 3) return 1;
+    }
+    return 0;
 }
 
 int main(void){
 
     card deck[52];
     init(deck, DECK_SIZE);
-    // print_deck(deck, DECK_SIZE);
-    // shuffle(deck, DECK_SIZE);
-    // print_deck(deck, DECK_SIZE);
-
+    shuffle(deck, DECK_SIZE);
     card *hand = deal_hand(HAND_SIZE, deck);
-    print_deck(hand, HAND_SIZE);
+    print_cards(hand, HAND_SIZE);
+    printf("Three of a Kind: %d\n", is_three(hand, HAND_SIZE));
+    printf("Pair: %d\n", is_pair(hand, HAND_SIZE));
+    printf("Ace: %d\n", is_ace_high(hand, HAND_SIZE));
     return 0;
 }
 
