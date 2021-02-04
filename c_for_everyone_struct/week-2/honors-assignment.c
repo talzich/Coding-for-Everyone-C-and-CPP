@@ -75,7 +75,14 @@ int init(card deck[], int len)
 }
 
 
-int print_deck(card deck[]){
+// This function prints the deck according to its current order
+int print_deck(card deck[], int len){
+    
+    if(len != DECK_SIZE){
+        printf("Wrong deck size\n");
+        return -1;
+    }
+
     int i;
     for(i = 0; i < DECK_SIZE; i++){
 		switch (deck[i].s)
@@ -95,10 +102,21 @@ int print_deck(card deck[]){
         case diamonds:
             printf("%d of diamonds\n", deck[i].pips);
             break;
-	}
+	    }
+    }
     return 0;
 }
 
+
+int main(void){
+
+    card deck[52];
+    init(deck, DECK_SIZE);
+    print_deck(deck, DECK_SIZE);
+    shuffle(deck, DECK_SIZE);
+    print_deck(deck, DECK_SIZE);
+    return 0;
+}
 
 
 
