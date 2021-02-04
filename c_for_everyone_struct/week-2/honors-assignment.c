@@ -86,20 +86,100 @@ int print_cards(card deck[], int len){
 		switch (deck[i].s)
         {
         case spades:
-            printf("%d of spades\n", deck[i].pips);
-            break;
+            int pip = deck[i].pips;
+            switch (pip)
+            {
+            case ACE:
+                printf("Ace of Spades\n");
+                break;
+
+            case KING:
+                printf("King of Spades\n");
+                break;
+
+            case QUEEN:
+                printf("Queen of Spades\n");
+                break;
+
+            case JACK:
+                printf("Jack of Spades\n");
+                break;
+            default:
+                printf("%d of Spades\n", deck[i].pips);
+                break;
+            }
         
         case hearts:
-            printf("%d of hearts\n", deck[i].pips);
-            break;
+            int pip = deck[i].pips;
+            switch (pip)
+            {
+            case ACE:
+                printf("Ace of Hearts\n");
+                break;
+
+            case KING:
+                printf("King of Hearts\n");
+                break;
+
+            case QUEEN:
+                printf("Queen of Hearts\n");
+                break;
+
+            case JACK:
+                printf("Jack of Hearts\n");
+                break;
+            default:
+                printf("%d of Hearts\n", deck[i].pips);
+                break;
+            }
 
         case clubs:
-            printf("%d of clubs\n", deck[i].pips);
-            break;
+            int pip = deck[i].pips;
+            switch (pip)
+            {
+            case ACE:
+                printf("Ace of Clubs\n");
+                break;
+
+            case KING:
+                printf("King of Clubs\n");
+                break;
+
+            case QUEEN:
+                printf("Queen of Clubs\n");
+                break;
+
+            case JACK:
+                printf("Jack of Clubs\n");
+                break;
+            default:
+                printf("%d of Clubs\n", deck[i].pips);
+                break;
+            }
 
         case diamonds:
-            printf("%d of diamonds\n", deck[i].pips);
-            break;
+            int pip = deck[i].pips;
+            switch (pip)
+            {
+            case ACE:
+                printf("Ace of Diamonds\n");
+                break;
+
+            case KING:
+                printf("King of Diamonds\n");
+                break;
+
+            case QUEEN:
+                printf("Queen of Diamonds\n");
+                break;
+
+            case JACK:
+                printf("Jack of Diamonds\n");
+                break;
+            default:
+                printf("%d of Diamonds\n", deck[i].pips);
+                break;
+            }
 	    }
     }
     return 0;
