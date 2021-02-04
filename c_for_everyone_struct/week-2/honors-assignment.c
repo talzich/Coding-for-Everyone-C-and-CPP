@@ -264,6 +264,9 @@ int is_three(card hand[], int hand_size)
     return 0;
 }
 
+int is_straight(card hand[], int hand_size){
+    
+}
 int main(void)
 {
 
