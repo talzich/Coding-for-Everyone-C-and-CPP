@@ -61,6 +61,7 @@ int straight_flush(card hand[])
     hand[STRAIGHT].pips = 8;
     return 0;
 }
+
 // This method gets a deck of cards and shuffles it
 // It ensures that the array will be shuffled based on a random seed taken from the usec time.
 // Found that great array shuffler at https://stackoverflow.com/questions/6127503/shuffle-array-in-c
@@ -85,29 +86,7 @@ int shuffle(card deck[], int len)
     return 0;
 }
 
-// This method fills the deck with standard poker cards
-int init(card deck[])
-{
-    short i;
 
-    for (i = 1; i <= DECK_SIZE; i++)
-    {
-        // Fill the cards with 1-13
-        deck[i - 1].pips = i % 13;
-        if (!(i % 13))
-            // If i%13 == 0, this card is a king
-            deck[i - 1].pips = KING;
-        if (i <= 13)
-            deck[i - 1].s = spades;
-        else if (i <= 26)
-            deck[i - 1].s = hearts;
-        else if (i <= 39)
-            deck[i - 1].s = clubs;
-        else
-            deck[i - 1].s = diamonds;
-    }
-    return 0;
-}
 
 // This function prints the deck according to its current order
 int print_cards(card deck[], int len)
