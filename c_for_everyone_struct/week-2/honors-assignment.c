@@ -28,31 +28,36 @@ typedef struct
 } card;
 
 // This method defines a comparison method to the qsort() method used in is_straight()
-int comp(const void *a, const void *b){
+int comp(const void *a, const void *b)
+{
     card *a_card = (card *)a;
     card *b_card = (card *)b;
     return (a_card->pips - b_card->pips);
 }
 
-// This method generates straight hands for testing 
-int straight(card straight_hand[]){
+// This method generates straight hands for testing
+int straight(card straight_hand[])
+{
     int i;
-    for(i = 0; i<STRAIGHT; i++){
-        straight_hand[i].pips = i+1;
-        straight_hand[i].s = i%4;
+    for (i = 0; i < STRAIGHT; i++)
+    {
+        straight_hand[i].pips = i + 1;
+        straight_hand[i].s = i % 4;
     }
-    straight_hand[STRAIGHT+1].pips = 10;
+    straight_hand[STRAIGHT + 1].pips = 10;
     straight_hand[STRAIGHT].pips = 8;
     return 0;
 }
 
-int straight_flush(card hand[]){
+int straight_flush(card hand[])
+{
     int i;
-    for(i = 0; i<STRAIGHT; i++){
-        hand[i].pips = i+1;
+    for (i = 0; i < STRAIGHT; i++)
+    {
+        hand[i].pips = i + 1;
         hand[i].s = spades;
     }
-    hand[STRAIGHT+1].pips = 10;
+    hand[STRAIGHT + 1].pips = 10;
     hand[STRAIGHT].pips = 8;
     return 0;
 }
@@ -257,8 +262,8 @@ int is_pair(card hand[], int hand_size)
     int i;
     for (i = 0; i < hand_size; i++)
     {
-        pips[hand[i].pips -1]++;
-        if (pips[hand[i].pips -1] == 2)
+        pips[hand[i].pips - 1]++;
+        if (pips[hand[i].pips - 1] == 2)
             return 1;
     }
     return 0;
@@ -272,11 +277,11 @@ int is_two_pair(card hand[], int hand_size)
     int i;
     for (i = 0; i < hand_size; i++)
     {
-        pips[hand[i].pips]++;
-        if (pips[hand[i].pips] == 2)
+        pips[hand[i].pips - 1]++;
+        if (pips[hand[i].pips - 1] == 2)
             count++;
     }
-    return (count == 2);
+    return (count >= 2);
 }
 
 // This function checks to see whether a hand has three of a kind
@@ -287,58 +292,91 @@ int is_three(card hand[], int hand_size)
     int i;
     for (i = 0; i < hand_size; i++)
     {
-        pips[hand[i].pips]++;
-        if (pips[hand[i].pips] == 3)
+        pips[hand[i].pips - 1]++;
+        if (pips[hand[i].pips - 1] == 3)
             return 1;
     }
     return 0;
 }
 
-// This function checks to see whether a hand has  a straight in it 
-int is_straight(card hand[], int hand_size){
+// This function checks to see whether a hand has  a straight in it
+int is_straight(card hand[], int hand_size)
+{
     qsort(hand, hand_size, sizeof(card), comp);
-    
+
     int i, count = 1;
-    for (i = hand_size-1; i>=1; i--){
-        if((hand[i].pips - hand[i-1].pips) == 1) {
+    for (i = hand_size - 1; i >= 1; i--)
+    {
+        if ((hand[i].pips - hand[i - 1].pips) == 1)
+        {
             count++;
-            if(count == STRAIGHT) return 1;
+            if (count == STRAIGHT)
+                return 1;
         }
-        else count = 1;
-    } 
+        else
+            count = 1;
+    }
     return (count == STRAIGHT);
 }
 
-int is_flush(card hand[], int hand_size){
+// This function checks to see whether a hand has  a flush in it
+int is_flush(card hand[], int hand_size)
+{
     int spades_count = 0;
     int hearts_count = 0;
     int clubs_count = 0;
     int diamonds_count = 0;
-    
+
     int i, suit;
-    for(i = 0; i<hand_size; i++){
+    for (i = 0; i < hand_size; i++)
+    {
         suit = hand[i].s;
-        switch(suit)
+        switch (suit)
         {
-            case spades:
-                spades_count++;
-                if(spades_count == FLUSH) return 1;
-                break;
-            case hearts:
-                hearts_count++;
-                if(hearts_count == FLUSH) return 1;
-                break;
-            case clubs:
-                clubs_count++;
-                if(clubs_count == FLUSH) return 1;
-                break;
-            case diamonds:
-                diamonds_count++;
-                if(diamonds_count == FLUSH) return 1;
-                break;
+        case spades:
+            spades_count++;
+            if (spades_count == FLUSH)
+                return 1;
+            break;
+        case hearts:
+            hearts_count++;
+            if (hearts_count == FLUSH)
+                return 1;
+            break;
+        case clubs:
+            clubs_count++;
+            if (clubs_count == FLUSH)
+                return 1;
+            break;
+        case diamonds:
+            diamonds_count++;
+            if (diamonds_count == FLUSH)
+                return 1;
+            break;
         }
     }
     return 0;
+}
+
+// This function checks to see whether a hand is a full house
+int is_full_house(card hand[], int hand_size)
+{
+    int pips[13] = {0};
+    int i;
+    for (i = 0; i < hand_size; i++)
+    {
+        pips[hand[i].pips - 1]++;
+    }
+
+    int pair_flag, three_flag;
+    for (i = 0; i < 13; i++)
+    {
+        if (pips[i] == 2)
+            pair_flag=1;
+        else if (pips[i] == 3)
+            three_flag=1;
+    }
+    return (pair_flag && three_flag);
 }
 
 int main(void)
@@ -346,13 +384,14 @@ int main(void)
     card deck[52];
     init(deck, DECK_SIZE);
     card *hand = deal_hand(HAND_SIZE, deck);
-    
+
     printf("Ace: %d\n", is_ace_high(hand, HAND_SIZE));
     printf("Pair: %d\n", is_pair(hand, HAND_SIZE));
     printf("Two pair: %d\n", is_two_pair(hand, HAND_SIZE));
     printf("Three of a Kind: %d\n", is_three(hand, HAND_SIZE));
     printf("Straight: %d\n", is_straight(hand, HAND_SIZE));
     printf("Flush: %d\n", is_flush(hand, HAND_SIZE));
+    printf("Full House: %d\n", is_full_house(hand, HAND_SIZE));
     printf("\n");
 
     print_cards(hand, HAND_SIZE);
