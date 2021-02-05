@@ -372,9 +372,9 @@ int is_full_house(card hand[], int hand_size)
     for (i = 0; i < 13; i++)
     {
         if (pips[i] == 2)
-            pair_flag=1;
+            pair_flag = 1;
         else if (pips[i] == 3)
-            three_flag=1;
+            three_flag = 1;
     }
     return (pair_flag && three_flag);
 }
