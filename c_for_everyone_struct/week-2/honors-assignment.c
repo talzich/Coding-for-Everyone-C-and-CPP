@@ -5,6 +5,7 @@
 #define DECK_SIZE 52
 #define HAND_SIZE 7
 #define STRAIGHT 5
+#define FLUSH 5
 
 #define ACE 1
 #define KING 13
@@ -45,6 +46,16 @@ int straight(card straight_hand[]){
     return 0;
 }
 
+int straight_flush(card hand[]){
+    int i;
+    for(i = 0; i<STRAIGHT; i++){
+        hand[i].pips = i+1;
+        hand[i].s = spades;
+    }
+    hand[STRAIGHT+1].pips = 10;
+    hand[STRAIGHT].pips = 8;
+    return 0;
+}
 // This method gets a deck of cards and shuffles it
 // It ensures that the array will be shuffled based on a random seed taken from the usec time.
 // Found that great array shuffler at https://stackoverflow.com/questions/6127503/shuffle-array-in-c
@@ -298,18 +309,52 @@ int is_straight(card hand[], int hand_size){
     return (count == STRAIGHT);
 }
 
-
+int is_flush(card hand[], int hand_size){
+    int spades_count = 0;
+    int hearts_count = 0;
+    int clubs_count = 0;
+    int diamonds_count = 0;
+    
+    int i, suit;
+    for(i = 0; i<hand_size; i++){
+        suit = hand[i].s;
+        switch(suit)
+        {
+            case spades:
+                spades_count++;
+                if(spades_count == FLUSH) return 1;
+                break;
+            case hearts:
+                hearts_count++;
+                if(hearts_count == FLUSH) return 1;
+                break;
+            case clubs:
+                clubs_count++;
+                if(clubs_count == FLUSH) return 1;
+                break;
+            case diamonds:
+                diamonds_count++;
+                if(diamonds_count == FLUSH) return 1;
+                break;
+        }
+    }
+    return 0;
+}
 
 int main(void)
 {
     card deck[52];
     init(deck, DECK_SIZE);
     card *hand = deal_hand(HAND_SIZE, deck);
-    printf("Three of a Kind: %d\n", is_three(hand, HAND_SIZE));
-    printf("Pair: %d\n", is_pair(hand, HAND_SIZE));
+    
     printf("Ace: %d\n", is_ace_high(hand, HAND_SIZE));
+    printf("Pair: %d\n", is_pair(hand, HAND_SIZE));
+    printf("Two pair: %d\n", is_two_pair(hand, HAND_SIZE));
+    printf("Three of a Kind: %d\n", is_three(hand, HAND_SIZE));
     printf("Straight: %d\n", is_straight(hand, HAND_SIZE));
+    printf("Flush: %d\n", is_flush(hand, HAND_SIZE));
     printf("\n");
+
     print_cards(hand, HAND_SIZE);
     return 0;
 }
