@@ -86,17 +86,11 @@ int shuffle(card deck[], int len)
 }
 
 // This method fills the deck with standard poker cards
-int init(card deck[], int len)
+int init(card deck[])
 {
     short i;
 
-    // We want a standard poker deck so we need 52 cards
-    if (len != DECK_SIZE)
-    {
-        printf("Wrong deck size\n");
-        return -1;
-    }
-    for (i = 1; i <= len; i++)
+    for (i = 1; i <= DECK_SIZE; i++)
     {
         // Fill the cards with 1-13
         deck[i - 1].pips = i % 13;
@@ -299,12 +293,34 @@ int is_three(card hand[], int hand_size)
     return 0;
 }
 
-// This function checks to see whether a hand has  a straight in it
+// This function checks to see whether a hand has a straight in it
 int is_straight(card hand[], int hand_size)
 {
     qsort(hand, hand_size, sizeof(card), comp);
+    int i, count = 1, royale_flag = 2;
 
-    int i, count = 1;
+    // Straight ace high
+    if(hand[0].pips == ACE && hand[hand_size-1].pips == KING){
+        for(i = 1; i<hand_size-1; i++){
+            switch (hand[i].pips)
+            {
+            case QUEEN:
+                royale_flag++;
+                break;
+            case JACK:
+                royale_flag++;
+                break;
+            case 10:
+                royale_flag++;
+                break;
+            }
+            if(royale_flag == 5){
+                return 1;
+            }
+        }
+    }
+
+    
     for (i = hand_size - 1; i >= 1; i--)
     {
         if ((hand[i].pips - hand[i - 1].pips) == 1)
@@ -319,7 +335,7 @@ int is_straight(card hand[], int hand_size)
     return (count == STRAIGHT);
 }
 
-// This function checks to see whether a hand has  a flush in it
+// This function checks to see whether a hand has a flush in it
 int is_flush(card hand[], int hand_size)
 {
     int spades_count = 0;
@@ -379,12 +395,56 @@ int is_full_house(card hand[], int hand_size)
     return (pair_flag && three_flag);
 }
 
+// This function checks to see whether a hand has four of a kind
+int is_four(card hand[], int hand_size)
+{
+    int pips[13] = {0};
+    int i;
+    for (i = 0; i < hand_size; i++)
+    {
+        pips[hand[i].pips - 1]++;
+        if (pips[hand[i].pips - 1] == 4)
+            return 1;
+    }
+    return 0;
+}
+
+// This function checks to see whether a hand is a straight flush
+int is_straight_flush(card hand[], int hand_size, card straight[])
+{
+    qsort(hand, hand_size, sizeof(card), comp);
+
+    int i, j = 0, count = 1;
+    for (i = hand_size - 1; i >= 1; i--)
+    {
+        if ((hand[i].pips - hand[i - 1].pips) == 1 && hand[i].s == hand[i - 1].s)
+        {
+            count++;
+            straight[j++] = hand[i];
+            if (count == STRAIGHT)
+                return 1;
+        }
+        else{
+            count = 1;
+            j = 0;
+        }
+    }
+    return (count == STRAIGHT);
+}
+
+// This function checks to see whether a hand is a royale flush
+int is_royale_flush(card hand[], int hand_size)
+{
+    card royals[FLUSH];
+}
+
+
 int main(void)
 {
     card deck[52];
-    init(deck, DECK_SIZE);
+    init(deck);
     card *hand = deal_hand(HAND_SIZE, deck);
-
+    card straight[STRAIGHT];
     printf("Ace: %d\n", is_ace_high(hand, HAND_SIZE));
     printf("Pair: %d\n", is_pair(hand, HAND_SIZE));
     printf("Two pair: %d\n", is_two_pair(hand, HAND_SIZE));
@@ -392,8 +452,10 @@ int main(void)
     printf("Straight: %d\n", is_straight(hand, HAND_SIZE));
     printf("Flush: %d\n", is_flush(hand, HAND_SIZE));
     printf("Full House: %d\n", is_full_house(hand, HAND_SIZE));
+    printf("Four of a Kind: %d\n", is_four(hand, HAND_SIZE));
+    printf("Straight flush: %d\n", is_straight_flush(hand, HAND_SIZE, straight));
+    printf("Royale flush: %d\n", is_royale_flush(hand, HAND_SIZE));
     printf("\n");
-
     print_cards(hand, HAND_SIZE);
     return 0;
 }
