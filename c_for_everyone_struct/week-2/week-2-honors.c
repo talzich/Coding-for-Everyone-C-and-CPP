@@ -53,20 +53,6 @@ int shuffle(card deck[])
     return 0;
 }
 
-void combinations(card hand[], int len, int start_pos, card res[], int index, card hands[][SUB_HAND]){
-
-    if(len == 0){
-        memcpy(hands[index++], res, sizeof(SUB_HAND*sizeof(card)));
-        print_cards(res, SUB_HAND);
-        return;
-    }
-    int i;
-    for(i = start_pos, i<= HAND_SIZE - len; i++){
-        res[SUB_HAND - len] = hand[i];
-        combinations(hand, len-1, i+1, res);
-    }
-}
-
 // This method fills the deck with standard poker cards
 int init(card deck[])
 {
@@ -98,6 +84,7 @@ int print_cards(card deck[], int len)
 {
 
     int i;
+    printf("*** Hand start *** \n");
     for (i = 0; i < len; i++)
     {
         short pip = deck[i].pips;
@@ -197,7 +184,22 @@ int print_cards(card deck[], int len)
             break;
         }
     }
+    printf("*** Hand end *** \n");
     return 0;
+}
+
+void combinations(card hand[], int len, int start_pos, card res[], int index, card hands[][SUB_HAND]){
+
+    if(len == 0){
+        memcpy(hands[index++], res, sizeof(SUB_HAND*sizeof(card)));
+        print_cards(res, SUB_HAND);
+        return;
+    }
+    int i;
+    for(i = start_pos; i<= (HAND_SIZE - len); i++){
+        res[SUB_HAND - len] = hand[i];
+        combinations(hand, len-1, i+1, res, index, hands);
+    }
 }
 
 // This method gets a card deck and deals a hand of HAND_SIZE size
@@ -285,7 +287,8 @@ int is_straight(card hand[]){
 
     card hands[21][SUB_HAND];
     card result[SUB_HAND];
-    combinations(hand, SUB_HAND, 0, result, 0);
+    combinations(hand, SUB_HAND, 0, result, 0, hands);
+    return 0;
 }
 
 int test_straight(){
@@ -293,12 +296,11 @@ int test_straight(){
     card hand[HAND_SIZE];
     int i, j;
 
-    for(i = 0; i < HAND_SIZE-1; i++){
+    for(i = 0; i < HAND_SIZE; i++){
         hand[i].pips = i + 1;
         hand[i].suit = spades;
     }
-    hand[i].pips = i;
-    hand[i].suit = hearts;
+    is_straight(hand);
     return 0;
 
 }
