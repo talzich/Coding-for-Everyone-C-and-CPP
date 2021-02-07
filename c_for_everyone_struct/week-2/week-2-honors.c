@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/time.h>
+#include <string.h>
 
 #define DECK_SIZE 52
 #define HAND_SIZE 7
+#define STRAIGHT 5
 #define PIPS 13
 
 #define KING 13
@@ -20,6 +22,14 @@ typedef struct
     short pips; // could be 1-13
     suit suit; // taken from above enum
 } card;
+
+// This method defines a comparison method to the qsort() method used in is_straight()
+int comp(const void *a, const void *b)
+{
+    card *a_card = (card *)a;
+    card *b_card = (card *)b;
+    return (a_card->pips - b_card->pips);
+}
 
 // This method gets a deck of cards and shuffles it
 // It ensures that the deck will be shuffled based on a random seed taken from the usec time.
@@ -255,5 +265,48 @@ int is_three(card hand[])
     return 0;
 }
 
+// This method checks to see whether a hand has a staright in it. 
+// If it does, it stores it in the 2 dimensional array
+int is_straight(card hand[], card straights[][STRAIGHT]){
 
+    qsort(hand, HAND_SIZE, sizeof(card), comp);
+    int res = 0, count = 1, i, j;
 
+    j = 0;
+    for (i = HAND_SIZE - 1; i >= 1; i--)
+    {
+        if ((hand[i].pips - hand[i - 1].pips) == 1)
+        {
+            count++;
+            if (count == STRAIGHT){
+                res = 1;
+                memcpy(straights[j++], &hand[i-1], HAND_SIZE*sizeof(card));
+            }
+        }
+        else
+            count = 1;
+    }
+    return res;
+}
+
+void test_is_straight(){
+    card *hand; 
+    for (size_t i = 0; i < HAND_SIZE; i++)
+    {
+        hand[i].pips = i+1;
+        hand[i].suit = spades;
+    }
+    card straights[4][5];
+    is_straight(hand, straights);
+
+    for (size_t i = 0; i < 4; i++)
+    {
+        print_cards(straights[i], HAND_SIZE);
+    }
+    
+}
+
+int main(void){
+    test_is_straight();
+    return 0;
+}
