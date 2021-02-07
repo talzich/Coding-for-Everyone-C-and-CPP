@@ -5,7 +5,7 @@
 
 #define DECK_SIZE 52
 #define HAND_SIZE 7
-#define SUB_HAND
+#define SUB_HAND 5
 #define STRAIGHT 5
 #define PIPS 13
 
@@ -51,6 +51,20 @@ int shuffle(card deck[])
         deck[i] = t;
     }
     return 0;
+}
+
+void combinations(card hand[], int len, int start_pos, card res[], int index, card hands[][SUB_HAND]){
+
+    if(len == 0){
+        memcpy(hands[index++], res, sizeof(SUB_HAND*sizeof(card)));
+        print_cards(res, SUB_HAND);
+        return;
+    }
+    int i;
+    for(i = start_pos, i<= HAND_SIZE - len; i++){
+        res[SUB_HAND - len] = hand[i];
+        combinations(hand, len-1, i+1, res);
+    }
 }
 
 // This method fills the deck with standard poker cards
@@ -266,35 +280,12 @@ int is_three(card hand[])
     return 0;
 }
 
-// This method checks to see whether a hand has a staright in it. 
-// If it does, it stores it in the 2 dimensional array
-int is_straight(card hand[], card straights[][STRAIGHT]){
+// This method checks to see whether a hand has a staright in it.
+int is_straight(card hand[]){
 
-    // Sort the hand in ascending order
-    qsort(hand, HAND_SIZE, sizeof(card), comp);
-    
-    int i, j = 1 , k = 0;
-    int count = 1, res = 0;
-
-    
-    while(1){
-        for (i = HAND_SIZE - j; i >= 1; i--){
-            if ((hand[i].pips - hand[i - 1].pips) == 1){
-                count++;
-                if (count == STRAIGHT){
-                    res =  1;
-                    memcpy(straights[k++], &hand[i-1], STRAIGHT*sizeof(card));
-                    j++;
-                    count = 1;
-                    break;
-                }
-            }
-            else
-                count = 1;
-        }
-        if(i < 1) break;
-    }
-    return res;
+    card hands[21][SUB_HAND];
+    card result[SUB_HAND];
+    combinations(hand, SUB_HAND, 0, result, 0);
 }
 
 int test_straight(){
@@ -308,24 +299,10 @@ int test_straight(){
     }
     hand[i].pips = i;
     hand[i].suit = hearts;
-
-    card straights[STRAIGHT][STRAIGHT];
-    for(i = 0; i<STRAIGHT; i++){
-        for(j = 0; j <STRAIGHT; j++){
-            straights[i][j].pips = -1;
-            straights[i][j].suit = 0;
-        }
-    }
-
-    is_straight(hand, straights);
-
-    for (i = 0; i < STRAIGHT; i++)
-    {
-        print_cards(straights[i], STRAIGHT);
-    }
     return 0;
 
 }
+
 int main(void){
     test_straight();
     return 0;
