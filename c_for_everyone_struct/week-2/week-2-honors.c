@@ -267,46 +267,13 @@ int is_three(card hand[])
 
 // This method checks to see whether a hand has a staright in it. 
 // If it does, it stores it in the 2 dimensional array
-int is_straight(card hand[], card straights[][STRAIGHT]){
+int is_straight(card hand[], card straights][][STRAIGHT]){
 
-    qsort(hand, HAND_SIZE, sizeof(card), comp);
-    int res = 0, count = 1, i, j;
-
-    j = 0;
-    for (i = HAND_SIZE - 1; i >= 1; i--)
-    {
-        if ((hand[i].pips - hand[i - 1].pips) == 1)
-        {
-            count++;
-            if (count == STRAIGHT){
-                res = 1;
-                memcpy(straights[j++], &hand[i-1], HAND_SIZE*sizeof(card));
-            }
-        }
-        else
-            count = 1;
-    }
-    return res;
 }
 
-void test_is_straight(){
-    card *hand; 
-    for (size_t i = 0; i < HAND_SIZE; i++)
-    {
-        hand[i].pips = i+1;
-        hand[i].suit = spades;
-    }
-    card straights[4][5];
-    is_straight(hand, straights);
-
-    for (size_t i = 0; i < 4; i++)
-    {
-        print_cards(straights[i], HAND_SIZE);
-    }
-    
+ 
 }
 
 int main(void){
-    test_is_straight();
     return 0;
 }
