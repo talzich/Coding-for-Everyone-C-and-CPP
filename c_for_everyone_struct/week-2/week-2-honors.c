@@ -5,6 +5,7 @@
 
 #define DECK_SIZE 52
 #define HAND_SIZE 7
+#define SUB_HAND
 #define STRAIGHT 5
 #define PIPS 13
 
@@ -267,13 +268,65 @@ int is_three(card hand[])
 
 // This method checks to see whether a hand has a staright in it. 
 // If it does, it stores it in the 2 dimensional array
-int is_straight(card hand[], card straights][][STRAIGHT]){
+int is_straight(card hand[], card straights[][STRAIGHT]){
 
+    // Sort the hand in ascending order
+    qsort(hand, HAND_SIZE, sizeof(card), comp);
+    
+    int i, j = 1 , k = 0;
+    int count = 1, res = 0;
+
+    
+    while(1){
+        for (i = HAND_SIZE - j; i >= 1; i--){
+            if ((hand[i].pips - hand[i - 1].pips) == 1){
+                count++;
+                if (count == STRAIGHT){
+                    res =  1;
+                    memcpy(straights[k++], &hand[i-1], STRAIGHT*sizeof(card));
+                    j++;
+                    count = 1;
+                    break;
+                }
+            }
+            else
+                count = 1;
+        }
+        if(i < 1) break;
+    }
+    return res;
 }
 
- 
-}
+int test_straight(){
 
+    card hand[HAND_SIZE];
+    int i, j;
+
+    for(i = 0; i < HAND_SIZE-1; i++){
+        hand[i].pips = i + 1;
+        hand[i].suit = spades;
+    }
+    hand[i].pips = i;
+    hand[i].suit = hearts;
+
+    card straights[STRAIGHT][STRAIGHT];
+    for(i = 0; i<STRAIGHT; i++){
+        for(j = 0; j <STRAIGHT; j++){
+            straights[i][j].pips = -1;
+            straights[i][j].suit = 0;
+        }
+    }
+
+    is_straight(hand, straights);
+
+    for (i = 0; i < STRAIGHT; i++)
+    {
+        print_cards(straights[i], STRAIGHT);
+    }
+    return 0;
+
+}
 int main(void){
+    test_straight();
     return 0;
 }

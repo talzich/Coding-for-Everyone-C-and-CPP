@@ -86,8 +86,6 @@ int shuffle(card deck[], int len)
     return 0;
 }
 
-
-
 // This function prints the deck according to its current order
 int print_cards(card deck[], int len)
 {
