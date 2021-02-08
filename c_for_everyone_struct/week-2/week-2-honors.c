@@ -36,6 +36,7 @@ int comp(const void *a, const void *b)
     return (a_card->pips - b_card->pips);
 }
 
+// Util method for combinations
 void get_combo(card combos[][SUB_HAND], card hand[], int s[]){
     card res[SUB_HAND];
     int i;
@@ -46,7 +47,7 @@ void get_combo(card combos[][SUB_HAND], card hand[], int s[]){
 }
 
 // This method takes a 7 card hand an produces all 5 card subhands available (7 choose 5 = 21)
-void combinations2(card combos[][SUB_HAND], card hand[]){
+void combinations(card combos[][SUB_HAND], card hand[]){
     int s[SUB_HAND];
     int i;
     for(i = 0; (s[i] = i)<SUB_HAND-1; i++);
@@ -461,7 +462,7 @@ int main(void){
         
         // Get all possible combinations (7C5) of that hand
         //card result[SUB_HAND];
-        combinations2(combos,hand);
+        combinations(combos,hand);
 
         find_straights(combos, indices);
 
