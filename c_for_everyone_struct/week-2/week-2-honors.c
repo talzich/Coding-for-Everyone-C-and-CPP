@@ -36,6 +36,7 @@ int comp(const void *a, const void *b)
     return (a_card->pips - b_card->pips);
 }
 
+// This method takes a 7 card hand an produces all 5 card subhands available (7 choose 5 = 21)
 void combinations(card hand[], int len, int start_pos, card res[], card hands[][SUB_HAND]){
 
     if(len == 0){
@@ -49,6 +50,15 @@ void combinations(card hand[], int len, int start_pos, card res[], card hands[][
     }
 }
 
+// This method takes a 5 card straight and returns true if the straight is a high straight (10 -> ACE)
+int high_straight(card hand[]){
+    int i, king_flag, ace_flag;
+    for(i = 0; i<SUB_HAND; i++){
+        if(hand[i].pips == KING) king_flag = 1;
+        else if(hand[i].pips == ACE) ace_flag = 1;
+    }
+    return (king_flag && ace_flag);
+}
 // This method gets a deck of cards and shuffles it
 // It ensures that the deck will be shuffled based on a random seed taken from the usec time.
 // Found that great array shuffler at https://stackoverflow.com/questions/6127503/shuffle-array-in-c
@@ -218,20 +228,6 @@ int deal_hand(card deck[], card hand[])
     return 0;
 }
 
-// This method checks to see whether a hand has an ace in it
-int is_ace_high(card hand[])
-{
-    int i;
-    for (i = 0; i < HAND_SIZE; i++)
-    {   
-        // If this card is an ace
-        if (hand[i].pips == ACE)
-            return 1;
-    }
-    // If we reached here, there is no ace in parameter hand
-    return 0;
-}
-
 // This method checks to see whether a hand has a pair in it
 int is_pair(card hand[])
 {
@@ -323,7 +319,7 @@ void find_straights(card combos[][SUB_HAND], int indices[]){
 }
 
 // This method determines whether a hand has a flush in it
-int is_flush(card hand[]){
+int is_flush(card hand[], int hand_size){
 
     int spades_count = 0;
     int hearts_count = 0;
@@ -331,7 +327,7 @@ int is_flush(card hand[]){
     int diamonds_count = 0;
 
     int i, suit;
-    for (i = 0; i < HAND_SIZE; i++)
+    for (i = 0; i < hand_size; i++)
     {
         suit = hand[i].suit;
         switch (suit)
@@ -397,27 +393,101 @@ int is_four(card hand[])
     return 0;
 }
 
+// This mehtod checks to see whether a hand is a straight flush
+int is_straight_flush(card combos[][SUB_HAND], int indices[]){
+
+    int i;
+    for(i = 0; i<21; i++){
+        if(indices[i]){
+            if(is_flush(combos[i], SUB_HAND)) return 1;
+        }
+    }
+    return 0;
+}
+
+// This mehtod checks to see whether a hand is a royal flush
+int is_royale_flush(card combos[][SUB_HAND], int indices[]){
+    int i;
+    for(i = 0; i<21; i++){
+        if(indices[i]){
+            if(high_straight(combos[i])){
+               if(is_flush(combos[i], SUB_HAND)) return 1; 
+            }
+        }
+    }
+    return 0;
+}
 
 int main(void){
 
-    int royal_flush = 0, straight_flush = 0, four_of_a_kind = 0, full_house = 0, flush = 0, straight = 0, three_of_a_kind = 0, two_pair = 0, pair = 0 , high_card = 0;
+    double royal_flush = 0.0, straight_flush = 0.0, four_of_a_kind = 0.0, full_house = 0.0, flush = 0.0, straight = 0.0, three_of_a_kind = 0.0, two_pair = 0.0, pair = 0.0 , high_card = 0.0;
     // Initialize a standard deck and deal a random 7 card hand
     card deck[DECK_SIZE];
     init(deck);
+    card hand[HAND_SIZE], combos[21][SUB_HAND];
 
-    card hand[HAND_SIZE];
-    deal_hand(deck, hand);
+    int i, indices[21]; 
+    for(i = 0; i<=BIG_NUMBER; i++){
+        
+        deal_hand(deck, hand);
 
-    // Get all possible combinations (7C5) of that hand
-    card combos[21][SUB_HAND];
-    card result[SUB_HAND];
-    combinations(hand, SUB_HAND, 0, result, combos);
+        // Get all possible combinations (7C5) of that hand
+        card result[SUB_HAND];
+        combinations(hand, SUB_HAND, 0, result, combos);
 
-    test_find_straights(hand, combos);
+        // get all indices of combos in which there is a straight
+        indices = {0};
+        find_straights(combos, indices);
 
-    // get all indices of combos in which there is a straight
-    int indices[21] = {0}, i;
-    find_straights(combos, indices);
+        if(is_royale_flush(combos, indices)){
+            royal_flush++;
+        }
+
+        else if(is_straight_flush(combos, indices)){
+            straight_flush++;
+        }
+
+        else if(is_four(hand)){
+            four_of_a_kind++;
+        }
+
+        else if(is_full_house(hand)){
+            full_house++;
+        }
+
+        else if(is_flush(hand, HAND_SIZE)){
+            flush++;
+        }
+
+        else if(is_straight(indices)){
+            is_straight++;
+        }
+
+        else if(is_three(hand)){
+            three_of_a_kind++;
+        }
+
+        else if(is_two_pair(hand)){
+            two_pair++;
+        }
+
+        else if(is_pair(hand)){
+            pair++;
+        }
+
+        else high_card++;
+    }
+
+    printf("Royal Flush - %lf\n", royal_flush/BIG_NUMBER);
+    printf("Straight Flush - %lf\n", straight_flush/BIG_NUMBER);
+    printf("Four of a Kind - %lf\n", four_of_a_kind/BIG_NUMBER);
+    printf("Full House - %lf\n", full_house/BIG_NUMBER);
+    printf("Flush - %lf\n", flush/BIG_NUMBER);
+    printf("Straight - %lf\n", straight/BIG_NUMBER);
+    printf("Three of a Kind - %lf\n", three_of_a_kind/BIG_NUMBER);
+    printf("Two Pairs - %lf\n", two_pair/BIG_NUMBER);
+    printf("Pair - %lf\n", pair/BIG_NUMBER);
+    printf("High Card - %lf\n", high_card/BIG_NUMBER);
 
 
 }
