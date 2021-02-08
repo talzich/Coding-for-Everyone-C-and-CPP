@@ -59,11 +59,13 @@ int high_straight(card hand[]){
     }
     return (king_flag && ace_flag);
 }
+
 // This method gets a deck of cards and shuffles it
 // It ensures that the deck will be shuffled based on a random seed taken from the usec time.
 // Found that great array shuffler at https://stackoverflow.com/questions/6127503/shuffle-array-in-c
 int shuffle(card deck[])
 {
+
     struct timeval tv;
     gettimeofday(&tv, NULL);
     int usec = tv.tv_usec;
@@ -223,7 +225,7 @@ int deal_hand(card deck[], card hand[])
     int i;
     for (i = 0; i < HAND_SIZE; i++)
     {
-        hand[i] = deck[i];
+        memcpy(&hand[i], &deck[i], sizeof(card));
     }
     return 0;
 }
@@ -359,8 +361,10 @@ int is_flush(card hand[], int hand_size){
 
 // This method determines whether a hand is a full house
 int is_full_house(card hand[]){
-    int pips[13] = {0};
-    int i;
+    int pips[13], i;
+    for(i = 0; i<13; i++){
+        pips[i] = 0;
+    }
 
     // For each possible pip, count the number of times it apperas in argument hand
     for (i = 0; i < HAND_SIZE; i++)
@@ -368,7 +372,7 @@ int is_full_house(card hand[]){
         pips[hand[i].pips - 1]++;
     }
 
-    int pair_flag, three_flag;
+    int pair_flag = 0, three_flag = 0;
     for (i = 0; i < 13; i++)
     {
         if (pips[i] == 2)
@@ -376,7 +380,7 @@ int is_full_house(card hand[]){
         else if (pips[i] == 3)
             three_flag = 1;
     }
-    return (pair_flag && three_flag);
+    return (pair_flag == 1 && three_flag == 1);
 }
 
 // This function checks to see whether a hand has four of a kind
@@ -423,20 +427,19 @@ int main(void){
     double royal_flush = 0.0, straight_flush = 0.0, four_of_a_kind = 0.0, full_house = 0.0, flush = 0.0, straight = 0.0, three_of_a_kind = 0.0, two_pair = 0.0, pair = 0.0 , high_card = 0.0;
     // Initialize a standard deck and deal a random 7 card hand
     card deck[DECK_SIZE];
-    init(deck);
-    card hand[HAND_SIZE], combos[21][SUB_HAND];
 
-    int i, indices[21]; 
+    int i, j;
+    int indices[21] = {0}; 
     for(i = 0; i<=BIG_NUMBER; i++){
-        
+        init(deck);
+        card hand[HAND_SIZE], combos[21][SUB_HAND];
         deal_hand(deck, hand);
+        print_cards(hand, HAND_SIZE);
 
         // Get all possible combinations (7C5) of that hand
         card result[SUB_HAND];
         combinations(hand, SUB_HAND, 0, result, combos);
 
-        // get all indices of combos in which there is a straight
-        indices = {0};
         find_straights(combos, indices);
 
         if(is_royale_flush(combos, indices)){
@@ -460,7 +463,7 @@ int main(void){
         }
 
         else if(is_straight(indices)){
-            is_straight++;
+            straight++;
         }
 
         else if(is_three(hand)){
@@ -488,6 +491,5 @@ int main(void){
     printf("Two Pairs - %lf\n", two_pair/BIG_NUMBER);
     printf("Pair - %lf\n", pair/BIG_NUMBER);
     printf("High Card - %lf\n", high_card/BIG_NUMBER);
-
-
+    return 0;
 }
