@@ -13,7 +13,7 @@
 #define JACK 11
 #define ACE 1
 
-int sub_index = 0, count_hands = 1;
+int sub_index = 0, count_hands = 0;
 
 // Cards suits
 typedef enum { spades, hearts, clubs, diamonds} suit;
@@ -202,18 +202,17 @@ int print_cards(card deck[], int len)
 }
 
 // This method gets a card deck and deals a hand of HAND_SIZE size
-card *deal_hand(card deck[])
+int deal_hand(card deck[], card hand[])
 {
     // We shuffle the cards before dealing a hand
     shuffle(deck);
-    card *hand = (card *)malloc(HAND_SIZE * sizeof(card));
 
     int i;
     for (i = 0; i < HAND_SIZE; i++)
     {
         hand[i] = deck[i];
     }
-    return hand;
+    return 0;
 }
 
 // This method checks to see whether a hand has an ace in it
@@ -281,37 +280,62 @@ int is_three(card hand[])
     return 0;
 }
 
-void find_straights(card combos[][SUB_HAND], int indices[]){
+// This method takes a 5 card hand and checks for a straight
+int is_straight_5(card hand[]){
 
-    
+    // Sort the 5 card hand before checking
+    qsort(hand, SUB_HAND, sizeof(card), comp);
+    if(hand[0].pips == ACE && hand[4].pips == KING){
+        if(hand[1].pips == 10 && hand[2].pips == JACK && hand[3].pips == QUEEN)
+            return 1;
+        return 0;
+    }
+    else{
+        // [1,2,3,4,5]
+        int i;
+        for(i = SUB_HAND-1; i >= 1; i--){
+            if((hand[i].pips - hand[i-1].pips) != 1) return 0; 
+        }
+        return 1;
+    }
 }
 
 // This method checks to see whether a hand has a staright in it.
 int is_straight(card hand[]){
 
+ return 0;
+}
 
+// This methos takes all 21 combos of 5 card hands from the given 7 cards 
+// and marks the indices in which there is a straight
+void find_straights(card combos[][SUB_HAND], int indices[]){
+    int i;
+    for(i = 0; i<21; i++){
+        if(is_straight_5(combos[i]))
+            indices[i] = 1;
+    }
 }
 
 
 int main(void){
 
+
     // Initialize a standard deck and deal a random 7 card hand
     card deck[DECK_SIZE];
     init(deck);
-    card hand[HAND_SIZE] = deal_hand(deck);
+    card hand[HAND_SIZE];
+    deal_hand(deck, hand);
 
     // Get all possible combinations (7C5) of that hand
     card combos[21][SUB_HAND];
     card result[SUB_HAND];
     combinations(hand, SUB_HAND, 0, result, combos);
 
+    test_find_straights(hand, combos);
+
     // get all indices of combos in which there is a straight
-    int indices[21], i;
-    for(i = 0; i<21; i++){
-        // initializing all to (-1) until filling properly
-        indices[i] = -1;
-    }
-    find_straights(combos, indices);
+    // int indices[21] = {0}, i;
+    // find_straights(combos, indices);
 
 
 }
