@@ -36,20 +36,6 @@ int comp(const void *a, const void *b)
     return (a_card->pips - b_card->pips);
 }
 
-// This method takes a 7 card hand an produces all 5 card subhands available (7 choose 5 = 21)
-void combinations(card hand[], int len, int start_pos, card res[], card hands[][SUB_HAND]){
-
-    if(len == 0){
-        memcpy(hands[sub_index++], res, SUB_HAND * sizeof(card));
-        return;
-    }
-    int i;
-    for(i = start_pos; i<= (HAND_SIZE - len); i++){
-        res[SUB_HAND - len] = hand[i];
-        combinations(hand, len-1, i+1, res, hands);
-    }
-}
-
 void get_combo(card combos[][SUB_HAND], card hand[], int s[]){
     card res[SUB_HAND];
     int i;
@@ -59,6 +45,7 @@ void get_combo(card combos[][SUB_HAND], card hand[], int s[]){
     memcpy(combos[sub_index++], res, SUB_HAND * sizeof(card));
 }
 
+// This method takes a 7 card hand an produces all 5 card subhands available (7 choose 5 = 21)
 void combinations2(card combos[][SUB_HAND], card hand[]){
     int s[SUB_HAND];
     int i;
