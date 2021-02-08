@@ -33,6 +33,19 @@ int comp(const void *a, const void *b)
     return (a_card->pips - b_card->pips);
 }
 
+void combinations(card hand[], int len, int start_pos, card res[], card hands[][SUB_HAND]){
+
+    if(len == 0){
+        memcpy(hands[sub_index++], res, SUB_HAND * sizeof(card));
+        return;
+    }
+    int i;
+    for(i = start_pos; i<= (HAND_SIZE - len); i++){
+        res[SUB_HAND - len] = hand[i];
+        combinations(hand, len-1, i+1, res, hands);
+    }
+}
+
 // This method gets a deck of cards and shuffles it
 // It ensures that the deck will be shuffled based on a random seed taken from the usec time.
 // Found that great array shuffler at https://stackoverflow.com/questions/6127503/shuffle-array-in-c
@@ -76,7 +89,6 @@ int init(card deck[])
         else
             deck[i - 1].suit = diamonds;
     }
-    shuffle(deck);
     return 0;
 }
 
@@ -189,20 +201,6 @@ int print_cards(card deck[], int len)
     return 0;
 }
 
-void combinations(card hand[], int len, int start_pos, card res[], card hands[][SUB_HAND]){
-
-    if(len == 0){
-        memcpy(hands[sub_index++], res, SUB_HAND * sizeof(card));
-        print_cards(hands[sub_index-1], SUB_HAND);
-        return;
-    }
-    int i;
-    for(i = start_pos; i<= (HAND_SIZE - len); i++){
-        res[SUB_HAND - len] = hand[i];
-        combinations(hand, len-1, i+1, res, hands);
-    }
-}
-
 // This method gets a card deck and deals a hand of HAND_SIZE size
 card *deal_hand(card deck[])
 {
@@ -283,35 +281,37 @@ int is_three(card hand[])
     return 0;
 }
 
-int is_straight_5(card hand[]){
+void find_straights(card combos[][SUB_HAND], int indices[]){
 
+    
 }
 
 // This method checks to see whether a hand has a staright in it.
 int is_straight(card hand[]){
 
-    card hands[21][SUB_HAND];
-    card result[SUB_HAND];
-    combinations(hand, SUB_HAND, 0, result, hands);
-
-    return 0;
-}
-
-int test_straight(){
-
-    card hand[HAND_SIZE];
-    int i, j;
-
-    for(i = 0; i < HAND_SIZE; i++){
-        hand[i].pips = i + 1;
-        hand[i].suit = spades;
-    }
-    is_straight(hand);
-    return 0;
 
 }
+
 
 int main(void){
-    test_straight();
-    return 0;
+
+    // Initialize a standard deck and deal a random 7 card hand
+    card deck[DECK_SIZE];
+    init(deck);
+    card hand[HAND_SIZE] = deal_hand(deck);
+
+    // Get all possible combinations (7C5) of that hand
+    card combos[21][SUB_HAND];
+    card result[SUB_HAND];
+    combinations(hand, SUB_HAND, 0, result, combos);
+
+    // get all indices of combos in which there is a straight
+    int indices[21], i;
+    for(i = 0; i<21; i++){
+        // initializing all to (-1) until filling properly
+        indices[i] = -1;
+    }
+    find_straights(combos, indices);
+
+
 }
