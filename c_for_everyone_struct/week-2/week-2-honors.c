@@ -6,12 +6,15 @@
 #define DECK_SIZE 52
 #define HAND_SIZE 7
 #define SUB_HAND 5
+#define FLUSH 5
 #define PIPS 13
 
 #define KING 13
 #define QUEEN 12
 #define JACK 11
 #define ACE 1
+
+#define BIG_NUMBER 1000000
 
 int sub_index = 0, count_hands = 0;
 
@@ -301,9 +304,12 @@ int is_straight_5(card hand[]){
 }
 
 // This method checks to see whether a hand has a staright in it.
-int is_straight(card hand[]){
-
- return 0;
+int is_straight(int indices[]){
+    int i;
+    for(i = 0; i<21; i++){
+        if(indices[i]) return 1;
+    }
+    return 0;
 }
 
 // This methos takes all 21 combos of 5 card hands from the given 7 cards 
@@ -316,13 +322,89 @@ void find_straights(card combos[][SUB_HAND], int indices[]){
     }
 }
 
+// This method determines whether a hand has a flush in it
+int is_flush(card hand[]){
+
+    int spades_count = 0;
+    int hearts_count = 0;
+    int clubs_count = 0;
+    int diamonds_count = 0;
+
+    int i, suit;
+    for (i = 0; i < HAND_SIZE; i++)
+    {
+        suit = hand[i].suit;
+        switch (suit)
+        {
+        case spades:
+            spades_count++;
+            if (spades_count == FLUSH)
+                return 1;
+            break;
+        case hearts:
+            hearts_count++;
+            if (hearts_count == FLUSH)
+                return 1;
+            break;
+        case clubs:
+            clubs_count++;
+            if (clubs_count == FLUSH)
+                return 1;
+            break;
+        case diamonds:
+            diamonds_count++;
+            if (diamonds_count == FLUSH)
+                return 1;
+            break;
+        }
+    }
+    return 0;
+}
+
+// This method determines whether a hand is a full house
+int is_full_house(card hand[]){
+    int pips[13] = {0};
+    int i;
+
+    // For each possible pip, count the number of times it apperas in argument hand
+    for (i = 0; i < HAND_SIZE; i++)
+    {
+        pips[hand[i].pips - 1]++;
+    }
+
+    int pair_flag, three_flag;
+    for (i = 0; i < 13; i++)
+    {
+        if (pips[i] == 2)
+            pair_flag = 1;
+        else if (pips[i] == 3)
+            three_flag = 1;
+    }
+    return (pair_flag && three_flag);
+}
+
+// This function checks to see whether a hand has four of a kind
+int is_four(card hand[])
+{
+    int pips[13] = {0};
+    int i;
+    for (i = 0; i < HAND_SIZE; i++)
+    {
+        pips[hand[i].pips - 1]++;
+        if (pips[hand[i].pips - 1] == 4)
+            return 1;
+    }
+    return 0;
+}
+
 
 int main(void){
 
-
+    int royal_flush = 0, straight_flush = 0, four_of_a_kind = 0, full_house = 0, flush = 0, straight = 0, three_of_a_kind = 0, two_pair = 0, pair = 0 , high_card = 0;
     // Initialize a standard deck and deal a random 7 card hand
     card deck[DECK_SIZE];
     init(deck);
+
     card hand[HAND_SIZE];
     deal_hand(deck, hand);
 
@@ -334,8 +416,8 @@ int main(void){
     test_find_straights(hand, combos);
 
     // get all indices of combos in which there is a straight
-    // int indices[21] = {0}, i;
-    // find_straights(combos, indices);
+    int indices[21] = {0}, i;
+    find_straights(combos, indices);
 
 
 }
