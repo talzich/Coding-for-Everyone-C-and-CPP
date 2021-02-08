@@ -1,18 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/time.h>
 #include <string.h>
+#include <sys/time.h>
 
 #define DECK_SIZE 52
 #define HAND_SIZE 7
 #define SUB_HAND 5
-#define STRAIGHT 5
 #define PIPS 13
 
 #define KING 13
 #define QUEEN 12
 #define JACK 11
 #define ACE 1
+
+int sub_index = 0, count_hands = 1;
 
 // Cards suits
 typedef enum { spades, hearts, clubs, diamonds} suit;
@@ -184,21 +185,21 @@ int print_cards(card deck[], int len)
             break;
         }
     }
-    printf("*** Hand end *** \n");
+    printf("*** Hand %d end *** \n\n", count_hands++);
     return 0;
 }
 
-void combinations(card hand[], int len, int start_pos, card res[], int index, card hands[][SUB_HAND]){
+void combinations(card hand[], int len, int start_pos, card res[], card hands[][SUB_HAND]){
 
     if(len == 0){
-        memcpy(hands[index++], res, sizeof(SUB_HAND*sizeof(card)));
-        print_cards(res, SUB_HAND);
+        memcpy(hands[sub_index++], res, SUB_HAND * sizeof(card));
+        print_cards(hands[sub_index-1], SUB_HAND);
         return;
     }
     int i;
     for(i = start_pos; i<= (HAND_SIZE - len); i++){
         res[SUB_HAND - len] = hand[i];
-        combinations(hand, len-1, i+1, res, index, hands);
+        combinations(hand, len-1, i+1, res, hands);
     }
 }
 
@@ -282,12 +283,17 @@ int is_three(card hand[])
     return 0;
 }
 
+int is_straight_5(card hand[]){
+
+}
+
 // This method checks to see whether a hand has a staright in it.
 int is_straight(card hand[]){
 
     card hands[21][SUB_HAND];
     card result[SUB_HAND];
-    combinations(hand, SUB_HAND, 0, result, 0, hands);
+    combinations(hand, SUB_HAND, 0, result, hands);
+
     return 0;
 }
 
