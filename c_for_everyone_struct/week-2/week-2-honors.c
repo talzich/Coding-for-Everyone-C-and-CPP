@@ -50,9 +50,39 @@ void combinations(card hand[], int len, int start_pos, card res[], card hands[][
     }
 }
 
+void get_combo(card combos[][SUB_HAND], card hand[], int s[]){
+    card res[SUB_HAND];
+    int i;
+    for (i = 0; i < SUB_HAND; i++) {
+        memcpy(&res[i], &hand[s[i]], sizeof(card));
+    }
+    memcpy(combos[sub_index++], res, SUB_HAND * sizeof(card));
+}
+
+void combinations2(card combos[][SUB_HAND], card hand[]){
+    int s[SUB_HAND];
+    int i;
+    for(i = 0; (s[i] = i)<SUB_HAND-1; i++);
+    get_combo(combos, hand, s);
+    for(;;){
+        int j;
+        
+        for(j = SUB_HAND-1; j >= 0 && s[j] == HAND_SIZE - SUB_HAND + j; j--)
+        ;
+            if(j<0)break;
+            s[j]++;
+            
+        for(++j; j < SUB_HAND; j++){
+            s[j] = s[j-1]+1;
+        }
+        get_combo(combos, hand, s);
+    }
+}
+
+
 // This method takes a 5 card straight and returns true if the straight is a high straight (10 -> ACE)
 int high_straight(card hand[]){
-    int i, king_flag, ace_flag;
+    int i, king_flag = 0, ace_flag = 0;
     for(i = 0; i<SUB_HAND; i++){
         if(hand[i].pips == KING) king_flag = 1;
         else if(hand[i].pips == ACE) ace_flag = 1;
@@ -295,7 +325,7 @@ int is_straight_5(card hand[]){
         // [1,2,3,4,5]
         int i;
         for(i = SUB_HAND-1; i >= 1; i--){
-            if((hand[i].pips - hand[i-1].pips) != 1) return 0; 
+            if((hand[i].pips - hand[i-1].pips) != 1) return 0;
         }
         return 1;
     }
@@ -310,7 +340,7 @@ int is_straight(int indices[]){
     return 0;
 }
 
-// This methos takes all 21 combos of 5 card hands from the given 7 cards 
+// This methos takes all 21 combos of 5 card hands from the given 7 cards
 // and marks the indices in which there is a straight
 void find_straights(card combos[][SUB_HAND], int indices[]){
     int i;
@@ -415,7 +445,7 @@ int is_royale_flush(card combos[][SUB_HAND], int indices[]){
     for(i = 0; i<21; i++){
         if(indices[i]){
             if(high_straight(combos[i])){
-               if(is_flush(combos[i], SUB_HAND)) return 1; 
+               if(is_flush(combos[i], SUB_HAND)) return 1;
             }
         }
     }
@@ -427,18 +457,24 @@ int main(void){
     double royal_flush = 0.0, straight_flush = 0.0, four_of_a_kind = 0.0, full_house = 0.0, flush = 0.0, straight = 0.0, three_of_a_kind = 0.0, two_pair = 0.0, pair = 0.0 , high_card = 0.0;
     // Initialize a standard deck and deal a random 7 card hand
     card deck[DECK_SIZE];
-
+    init(deck);
+    card hand[HAND_SIZE], combos[21][SUB_HAND];
+    
     int i, j;
-    int indices[21] = {0}; 
+    int indices[21] = {0};
     for(i = 0; i<=BIG_NUMBER; i++){
-        init(deck);
-        card hand[HAND_SIZE], combos[21][SUB_HAND];
+        
         deal_hand(deck, hand);
-        print_cards(hand, HAND_SIZE);
-
+        //print_cards(hand, HAND_SIZE);
+        
+        // zero all indices marking locations of straights
+        for(j = 0; j<21; j++){
+            indices[j] = 0;
+        }
+        
         // Get all possible combinations (7C5) of that hand
-        card result[SUB_HAND];
-        combinations(hand, SUB_HAND, 0, result, combos);
+        //card result[SUB_HAND];
+        combinations2(combos,hand);
 
         find_straights(combos, indices);
 
@@ -479,6 +515,7 @@ int main(void){
         }
 
         else high_card++;
+        sub_index = 0;
     }
 
     printf("Royal Flush - %lf\n", royal_flush/BIG_NUMBER);
