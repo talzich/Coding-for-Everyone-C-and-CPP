@@ -34,3 +34,22 @@ list *array_to_list(int d[], int size){
     }
     return head;
 }
+
+// This method prints the title of parameter list, followed by as line of this list's elements
+void print_list(list *h, char *title){
+    printf("%s\n", title);
+    while(h != NULL){
+        printf("%d :", h->data);
+        printf("\n");
+        h = h->next;
+    }
+}
+
+int main(void){
+    list l;
+    list *head = NULL;
+    int data[] = {2,3,5,7,8,9};
+    head = array_to_list(data, 6);
+    print_list(head, "My list: ");
+    return 0;
+}
