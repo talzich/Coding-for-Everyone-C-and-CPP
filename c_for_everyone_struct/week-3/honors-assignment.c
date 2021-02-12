@@ -95,6 +95,7 @@ void sort_list(list *h){
 
 }
 
+// This method removes argument node from the list
 void remove_node(list *node){
     if(node != NULL){
         // If the element we want to remove is the only element in the list
@@ -132,12 +133,17 @@ void remove_node(list *node){
     }
 }
 
+// This method removed duplicate values from the list
 void remove_dups(list *h){
     while (h->next != NULL){
+
+        // If next node holds equal data, remove it.
+        // The removal will "push" the list back
         if (h->data == h->next->data){
             remove_node(h->next);
         }
         else
+            // If the elements are different, push the pointer one step forward
             h = h->next;
     }
 }
