@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-#define SIZE 10
+#define SIZE 200
 
 // defines the struct list
 typedef struct list{ int data; struct list *next; struct list *prev;}list;
@@ -133,10 +133,11 @@ void remove_node(list *node){
 }
 
 void remove_dups(list *h){
-    while(h->next != NULL){
-        if(h->data == h->next->data)
+    while (h->next != NULL){
+        if (h->data == h->next->data){
             remove_node(h->next);
-        if(h->next != NULL)
+        }
+        else
             h = h->next;
     }
 }
@@ -145,11 +146,11 @@ void remove_dups(list *h){
 int main(void){
 
     // Starting the list with a random number
-    list *l = create_list(rand()%10);
+    list *l = create_list(rand()%49);
     // Adding (size-1) new elements to the list with a random number
     int i;
     for(i = 0; i < SIZE-1; i++){
-        l = add_to_front(rand()%10, l);
+        l = add_to_front(rand()%49, l);
     }
     print_list(l, "Before sorting");
     sort_list(l);
