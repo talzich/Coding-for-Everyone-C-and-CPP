@@ -74,6 +74,12 @@ void swap_nodes(list *p1, list *p2){
 void sort_list(list *h){
     int i, j;
     list *p1, *p2;
+
+    /*  For each iteration we will consider two adjacent pointers
+        always starting at the beggining of the list. 
+        i will represent the number of times we will move the pointers one step ahead
+        decreasing as we bubble more and more element to the end of the list
+    */
     for(i = SIZE-2; i >= 0; i--){
         p1 = h;
         p2 = p1->next;
@@ -84,12 +90,16 @@ void sort_list(list *h){
             p2 = p2->next;
         }
     }
+
 }
 
 
 int main(void){
 
+    // Starting the list with a random number
     list *l = create_list(rand()%1000);
+    
+    // Adding (size-1) new elements to the list with a random number
     int i;
     for(i = 0; i < SIZE-1; i++){
         l = add_to_front(rand()%1000, l);
@@ -97,4 +107,6 @@ int main(void){
     print_list(l, "Before sorting");
     sort_list(l);
     print_list(l, "After Sorting");
+    return 0;
+    
 }
