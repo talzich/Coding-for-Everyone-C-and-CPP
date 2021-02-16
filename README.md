@@ -1,4 +1,3 @@
-
 # Overview
 This repo's main objective is to facilitate the progress, quizes, pieces of code and assignments of the Coursera Specialization **"Coding for Everyone: C and C++"** by Dr. Ira Pohl from the **University of California, Santa Cruz**.
 The specialization consists of four courses: 
@@ -11,7 +10,7 @@ The specialization consists of four courses:
 ### Updates
 ***
 C for Everyone: Programming Fundamentals - COMPLETE!
-[My certificate](https://github.com/talzich/C-Coursera/blob/main/C%20Course%20Certificate.pdf)
+[My certificate](https://github.com/talzich/Coding-for-Everyone-C-and-CPP/blob/main/c_for_everyone_fundamentals/C%20Course%20Certificate.pdf)
 
 
 
