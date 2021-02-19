@@ -11,7 +11,7 @@
 	This method will take a file pointer, an int and an array and will read data from 
     the file into the array
 */
-void read_file(FILE *ifp, FILE *ofp, int d[], int size){
+void read_file(FILE *ifp, int d[], int size){
 	
     int i; 
     for(i = 0; i < size; i++){
@@ -143,7 +143,7 @@ int main(int argc, char *argv[]){
     int data[n];
 
     // It's importent not to rewind before that point
-    read_file(ifp, ofp, data, n);
+    read_file(ifp, data, n);
 
     // Storing the values of max element and average
     avg = average(data, n);
