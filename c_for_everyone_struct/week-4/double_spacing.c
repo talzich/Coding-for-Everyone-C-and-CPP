@@ -42,6 +42,8 @@ int main(int argc, char *argv[]){
 	double_space(ifp, ofp);
 	print_file(ifp);
 	print_file(ofp);
+	fclose(ifp);
+	fclose(ofp);
 	return 0;
 }
 
