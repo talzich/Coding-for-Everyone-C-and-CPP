@@ -115,16 +115,10 @@ int main(int argc, char *argv[]){
     int size, max;
     double avg;
     char str_avg[50];
-
-    // Check number of arguments is right
-    if(argc != 3){
-        printf("Not enough arguments\n");
-        exit(1);
-    }
     
     // Opening the files
-    ifp = fopen(argv[1], "r");
-    ofp = fopen(argv[2], "w+");
+    ifp = fopen("data", "r");
+    ofp = fopen("answer-hw3", "w+");
     
     // Checking validity of file
     if(fscanf(ifp, "%d", &size) != 1){
