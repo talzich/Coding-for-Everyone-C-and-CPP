@@ -125,6 +125,7 @@ int main(int argc, char *argv[]){
     int n, max;
     double avg;
 
+    // Checking number of arguments
     if(argc != 2){
         printf("Wrong number of arguments, please specify only input file name\n");
         exit(1);
