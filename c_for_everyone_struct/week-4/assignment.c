@@ -122,7 +122,6 @@ int main(int argc, char *argv[]){
     
     // Checking validity of file
     if(fscanf(ifp, "%d", &size) != 1){
-        printf("Size: %d\n", size);
         printf("File empty\n");
         exit(1);
     }
