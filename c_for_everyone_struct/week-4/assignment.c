@@ -9,9 +9,9 @@
 
 /*
 	This method will take a file pointer, an int and an array and will read data from 
-    the file into the array.
+    the file into the array. In addition, this method writes the data into the output file
 */
-void read_file(FILE *ifp, int d[], int size){
+void read_file(FILE *ifp, FILE *ofp, int d[], int size){
 	
     int i; 
     for(i = 0; i < size; i++){
@@ -56,34 +56,45 @@ void print_array(int d[], int size){
 }
 
 // This method stores the answer in the file passed as parameter
-void store_answer(int d[], int size, char *avg, int max, FILE *ofp){
+void store_answer(int d[], int size, double avg, int max, FILE *ofp){
 
     char line1[] = "File contained following elements:\n";
-    char maximum[] = "Max is:\n";
-    char average[] = "Average is:\n";
-    char c;
-    int i;
+    char maximum[] = "Max is:\t";
+    char average[] = "Average is:\t";
+    char c, element[10];
+    int i, j;
     
     // Writing first line to the file
     for(i = 0; i < strlen(line1); i++){
         putc(line1[i], ofp);
     }
-    putc('\n', ofp);
 
-    // Writing all elements to the file
+    // Writing all elements to the file.
+    // First for loop iterates through all the elements in the array.
+    // Inner for loop iterates through
     for(i = 0; i < size; i++){
-        putc(d[i] + '0', ofp);
+        sprintf(element, "%d", d[i]);
+        for(j = 0; j < strlen(element); j++){
+            putc(element[j], ofp);
+        }
         putc('\t', ofp);
         if((i+1)%10 == 0)
             putc('\n', ofp);
     }
     putc('\n', ofp);
+    putc('\n', ofp);
 
-    // Writing maximum line and maximum value to the file
+    // Writing maximum line maximum value to the file
     for(i = 0; i < strlen(maximum); i++){
         putc(maximum[i], ofp);
     }
-    putc(max + '0', ofp);
+
+    // Writing maximum value to the file
+    sprintf(element, "%d", max);
+    for (i = 0; i < strlen(element); i++){
+        putc(element[i], ofp);
+    }
+    putc('\n', ofp);
     putc('\n', ofp);
 
     // Writing average line to the file
@@ -92,9 +103,11 @@ void store_answer(int d[], int size, char *avg, int max, FILE *ofp){
     }
 
     // Writing average value to the file
-    for(i = 0; i < strlen(avg); i++){
-        putc(avg[i], ofp);
+    sprintf(element, "%f", avg);
+    for(i = 0; i < strlen(element); i++){
+        putc(element[i], ofp);
     }
+    putc('\n', ofp);
     putc('\n', ofp);
 
 }
@@ -129,13 +142,12 @@ int main(int argc, char *argv[]){
     int data[size];
 
     // It's importent not to rewind before that point
-    read_file(ifp, data, size);
+    read_file(ifp, ofp, data, size);
 
     // Storing the values of max element and average
     avg = average(data, size);
     max = find_max(data, size);
-    sprintf(str_avg,"%f", avg); // We need a string representation of the average
 
-    store_answer(data, size, str_avg, max, ofp);
+    store_answer(data, size, avg, max, ofp);
     print_file(ofp);
 }
