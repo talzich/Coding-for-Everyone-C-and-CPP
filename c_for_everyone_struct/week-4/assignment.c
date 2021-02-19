@@ -9,7 +9,7 @@
 
 /*
 	This method will take a file pointer, an int and an array and will read data from 
-    the file into the array. In addition, this method writes the data into the output file
+    the file into the array
 */
 void read_file(FILE *ifp, FILE *ofp, int d[], int size){
 	
@@ -19,7 +19,7 @@ void read_file(FILE *ifp, FILE *ofp, int d[], int size){
     }
 }
 
-// This methos will return the average of the contents of argument array
+// This method will return the average of the contents of argument array
 double average(int d[], int size){
 	double avg;
 	int i;
