@@ -44,7 +44,6 @@ int find_max(int d[], int size){
     return max;
 }
 
-
 // This method stores the answer in the file passed as parameter
 void store_answer(int d[], int size, double avg, int max, FILE *ofp){
 
@@ -125,9 +124,14 @@ int main(int argc, char *argv[]){
     FILE *ifp, *ofp; // Those files will be our input and output files
     int n, max;
     double avg;
+
+    if(argc != 2){
+        printf("Wrong number of arguments, please specify only input file name\n");
+        exit(1);
+    }
     
     // Opening the files
-    ifp = fopen("data", "r");
+    ifp = fopen(argv[1], "r");
     ofp = fopen("answer-hw3", "w+");
     
     // If the file is valid, declare an array data of size n
