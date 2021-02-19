@@ -44,24 +44,19 @@ int find_max(int d[], int size){
     return max;
 }
 
-// This methods prints all the elements of the array
-void print_array(int d[], int size){
-    int i;
-    for(i = 0; i < size; i++){
-        printf("%d\t", d[i]);
-        if((i+1)%10 == 0)
-            printf("\n");
-    }
-    printf("\n");
-}
 
 // This method stores the answer in the file passed as parameter
 void store_answer(int d[], int size, double avg, int max, FILE *ofp){
 
+    // Those strings will be written to the file in that order
     char line1[] = "File contained following elements:\n";
     char maximum[] = "Max is:\t";
     char average[] = "Average is:\t";
-    char c, element[10];
+
+    // We will use that string for convertion of the numeric values of our data
+    char element[10];
+    
+    // Indices
     int i, j;
     
     // Writing first line to the file
@@ -71,26 +66,31 @@ void store_answer(int d[], int size, double avg, int max, FILE *ofp){
 
     // Writing all elements to the file.
     // First for loop iterates through all the elements in the array.
-    // Inner for loop iterates through
+    // Inner for loop iterates through each element and writes it to the file
     for(i = 0; i < size; i++){
+
+        // Converting each element to string and writing it to ofp
         sprintf(element, "%d", d[i]);
         for(j = 0; j < strlen(element); j++){
             putc(element[j], ofp);
         }
         putc('\t', ofp);
+
+        // Break line every 10 elements
         if((i+1)%10 == 0)
             putc('\n', ofp);
+
     }
     putc('\n', ofp);
     putc('\n', ofp);
 
-    // Writing maximum line maximum value to the file
+    // Writing maximum line to the file
     for(i = 0; i < strlen(maximum); i++){
         putc(maximum[i], ofp);
     }
 
     // Writing maximum value to the file
-    sprintf(element, "%d", max);
+    sprintf(element, "%d", max); // Converting max value to string
     for (i = 0; i < strlen(element); i++){
         putc(element[i], ofp);
     }
@@ -103,19 +103,17 @@ void store_answer(int d[], int size, double avg, int max, FILE *ofp){
     }
 
     // Writing average value to the file
-    sprintf(element, "%f", avg);
+    sprintf(element, "%lf", avg); // Converting avg value to string
     for(i = 0; i < strlen(element); i++){
         putc(element[i], ofp);
     }
     putc('\n', ofp);
     putc('\n', ofp);
-
 }
 
 // This method will take a file pointer as parameter and will print the content of the file
 void print_file(FILE *fp){
-
-	rewind(fp);
+	rewind(fp); // In case file pointer needs to be rewind
 	char c;
 	while((c = getc(fp)) != EOF){
 		putc(c, stdout);
@@ -125,29 +123,31 @@ void print_file(FILE *fp){
 int main(int argc, char *argv[]){
 
     FILE *ifp, *ofp; // Those files will be our input and output files
-    int size, max;
+    int n, max;
     double avg;
-    char str_avg[50];
     
     // Opening the files
     ifp = fopen("data", "r");
     ofp = fopen("answer-hw3", "w+");
     
-    // Checking validity of file
-    if(fscanf(ifp, "%d", &size) != 1){
+    // If the file is valid, declare an array data of size n
+    if(fscanf(ifp, "%d", &n) != 1){
         printf("File empty\n");
         exit(1);
     }
-    
-    int data[size];
+    int data[n];
 
     // It's importent not to rewind before that point
-    read_file(ifp, ofp, data, size);
+    read_file(ifp, ofp, data, n);
 
     // Storing the values of max element and average
-    avg = average(data, size);
-    max = find_max(data, size);
+    avg = average(data, n);
+    max = find_max(data, n);
 
-    store_answer(data, size, avg, max, ofp);
+    store_answer(data, n, avg, max, ofp);
     print_file(ofp);
+
+    // Closing the files
+    fclose(ifp);
+    fclose(ofp);
 }
