@@ -3,6 +3,9 @@
 using namespace :: std;
 const double m_to_k = 1.609;
 
+// inline is not widely used thanks to compiler flag "optimize", but this one
+// is here for educational purposes
+
 inline double convert(int mi) { return mi*m_to_k; }
 
 int main (void){
