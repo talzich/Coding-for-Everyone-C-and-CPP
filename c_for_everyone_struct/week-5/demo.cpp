@@ -17,8 +17,6 @@ int main(void){
 
 	cout << "This program uses some features that are not in C89\n";
 	
-	// g++ compiler is not happy with that auto declaration
-	// Will try to fix that	
 	for(auto i = 0; i < 16; i++){
 		cout << "factorial of " << i << " is " << fact(i) << endl;
 	}
