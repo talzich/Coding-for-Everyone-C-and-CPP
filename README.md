@@ -3,14 +3,15 @@ This repo's main objective is to facilitate the progress, quizes, pieces of code
 The specialization consists of four courses: 
 
  - [x] C for Everyone: Programming Fundamentals
- - [ ] C for Everyone: Structured Programming
+ - [x] C for Everyone: Structured Programming
 - [ ] C++ for C Programmers, Part A
 - [ ] C++ for C Programmers, Part B
 
 ### Updates
 ***
-C for Everyone: Programming Fundamentals - COMPLETE!
+C for Everyone: Programming Fundamentals - Completed with 98.54%
 [My certificate](https://github.com/talzich/Coding-for-Everyone-C-and-CPP/blob/main/c_for_everyone_fundamentals/C%20Course%20Certificate.pdf)
 
-
+C for Everyone: Strucured Programing - Completed with honors at 100%
+[Honors certificate](https://github.com/talzich/Coding-for-Everyone-C-and-CPP/blob/main/c_for_everyone_struct/Certificate.pdf)
 
