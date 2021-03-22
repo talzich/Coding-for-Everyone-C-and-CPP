@@ -22,8 +22,11 @@ int main(void){
   
   int accum = 0;
   
-  vector<int> data;
+
+  vector<int> data (N);
   
+  cout << "Test" << endl;
+
   // Initializing vector elements
   for (int i = 0; i < N; ++i)
   {

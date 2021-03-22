@@ -4,5 +4,5 @@
 const short N = 40;
 
 inline int
-sum(vector<int> data)
+sum(std::vector<int> data)
 { return std::accumulate(data.begin(), data.end(), 0); }
