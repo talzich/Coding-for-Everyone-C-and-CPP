@@ -14,9 +14,16 @@
 
 #include <iostream>
 #include <array>
-#include "assignment.hpp"
+#include <vector>
+#include <numeric>
 
 using namespace std;
+
+const short N = 40;
+
+inline int
+sum(vector<int> data)
+{ return accumulate(data.begin(), data.end(), 0); }
 
 int main(void){
   
