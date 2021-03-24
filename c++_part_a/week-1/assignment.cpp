@@ -19,8 +19,10 @@
 
 using namespace std;
 
+// Replacing the #define
 const short N = 40;
 
+// Inlining the function, as requested in the prompt
 inline int
 sum(vector<int> data)
 { return accumulate(data.begin(), data.end(), 0); }
@@ -28,19 +30,16 @@ sum(vector<int> data)
 int main(void){
   
   int accum = 0;
-  
-
   vector<int> data (N);
-  
-  cout << "Test" << endl;
 
-  // Initializing vector elements
+  // Filling vector
   for (int i = 0; i < N; ++i)
   {
     data[i] = i;
   }
   accum = sum(data);
 
+  // Printing the outcome using cout instead of printf
   cout << "Sum is " << accum << endl;
 
   return 0;
