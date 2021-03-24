@@ -1,0 +1,9 @@
+
+# Apple's files
+.DS_Store
+
+# Visual Studio files
+.vscode/
+
+# Assignment txt files
+*.txt
