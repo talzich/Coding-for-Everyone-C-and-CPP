@@ -10,7 +10,7 @@ The specialization consists of four courses:
 ### Updates
 ***
 C for Everyone: Programming Fundamentals - Completed with 98.54%
-[My certificate](https://github.com/talzich/Coding-for-Everyone-C-and-CPP/blob/main/c_for_everyone_fundamentals/C%20Course%20Certificate.pdf)
+[My certificate](https://github.com/talzich/Coding-for-Everyone-C-and-CPP/blob/main/c_for_everyone_fundamentals/Certificate.pdf)
 
 C for Everyone: Strucured Programing - Completed with honors at 100%
 [Honors certificate](https://github.com/talzich/Coding-for-Everyone-C-and-CPP/blob/main/c_for_everyone_struct/Certificate.pdf)
