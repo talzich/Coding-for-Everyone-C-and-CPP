@@ -19,8 +19,22 @@ class list{
     list_element *end_ptr;
     public:
         list(): head(nullptr), arbitrary_ptr(nullptr){}
+
+        list(const int *arr, int n) :head(nullptr), arbitrary_ptr(nullptr)
+        {
+            if(n >= 1)
+            {
+                for(int i = 0; i < n; ++i)
+                {
+                    append(arr[i]);
+                }
+            }   
+        }
+        
         int get_element(){ return arbitrary_ptr->data; }
+        
         void advance(){ arbitrary_ptr = arbitrary_ptr->next; }
+        
         void prepend(int n)
         {
             if(head == nullptr)
@@ -32,6 +46,7 @@ class list{
                 head = new list_element(n, head);
             }
         }
+        
         void append(int n)
         {
             if(head == nullptr)
@@ -44,6 +59,7 @@ class list{
                 end_ptr = end_ptr->next;
             }
         }
+        
         void print()
         {
             list_element *curr = head;
@@ -58,14 +74,15 @@ class list{
 
 int main()
 {
-    list l{};
-    for(int i = 1; i <= 5; ++i)
-    {
-        l.append(i);
-    }
-    for(int i = 6; i <= 10; ++i)
-    {
-        l.prepend(i);
-    }
+    int arr[10] = {1,2,3,4,5,6,7,8,9,10};
+    list l{arr, 10};
+    // for(int i = 1; i <= 5; ++i)
+    // {
+    //     l.append(i);
+    // }
+    // for(int i = 6; i <= 10; ++i)
+    // {
+    //     l.prepend(i);
+    // }
     l.print();
 }
