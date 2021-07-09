@@ -33,7 +33,21 @@ class list{
 
         list(const list &other)
         {
-            
+            if(other.head == nullptr)
+            {
+                head = nullptr;
+                arbitrary_ptr = nullptr;
+                end_ptr = nullptr;
+            }
+            else
+            {
+                list_element *curr = other.head;
+                while(curr != nullptr)
+                {
+                    append(curr->data);
+                    curr=curr->next;
+                }
+            }
         }
         
         int get_element(){ return arbitrary_ptr->data; }
@@ -90,4 +104,8 @@ int main()
     //     l.prepend(i);
     // }
     l.print();
+    list l2{l};
+    l2.print();
+    return 0;
+
 }
