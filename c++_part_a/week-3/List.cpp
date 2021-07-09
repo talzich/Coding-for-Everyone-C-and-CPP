@@ -30,6 +30,11 @@ class list{
                 }
             }   
         }
+
+        list(const list &other)
+        {
+            
+        }
         
         int get_element(){ return arbitrary_ptr->data; }
         
